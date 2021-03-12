@@ -1,10 +1,10 @@
 {
-  "name": "koa-template",
+  "name": "time-tracker",
   "version": "1.0.0",
-  "description": "koaJs template",
+  "description": "Time-tracker",
   "repository": {
     "type": "git",
-    "url": "git@github.com:bichiko/koajs-template.git"
+    "url": "git@github.com:bichiko/time-tracker.git"
   },
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
@@ -26,11 +26,9 @@
     "lint:fix": "eslint src --fix"
   },
   "keywords": [
-    "koa",
-    "koajs",
-    "node",
-    "nodejs",
-    "template"
+    "time",
+    "tracker",
+    "time-tracker"
   ],
   "author": "harry kodua",
   "license": "MIT",
