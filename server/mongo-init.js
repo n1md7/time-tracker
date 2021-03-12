@@ -1,4 +1,5 @@
 // Creates DB koa [insert is necessary to create it]
+// In main migration init collection is removed
 db.createUser(
     {
         user: "koa",
@@ -11,4 +12,4 @@ db.createUser(
         ]
     }
 );
-db.test.insert({"test": "test"});
+db.init.insert({"initial": "data"});

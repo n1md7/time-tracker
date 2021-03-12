@@ -3,10 +3,10 @@ export default {
         apiContextPath: '/api',
         hostname: '0.0.0.0',
         port: 8080,
-        staticFolderPath: '../../../app/build',
-        indexFile: '/index.html'
+        staticFolderPath: '../../../game/build',
+        indexFile: '/index.html',
     },
-    origin: '*.domain.com',
+    origin: 'http://localhost:3000',
     loggerOptions: {
         fileOptions: {
             maxsize: 100000000,
@@ -15,5 +15,19 @@ export default {
         },
         timeStampFormat: 'YYYY-MM-DD HH:mm:ss:ms',
         excludeUrlsFromLogger: ['/health-check']
+    },
+    mysql: {
+        host: 'localhost',
+        user: 'root',
+        database: 'admin',
+        debug: false,
+        connectionLimit: 100
+    },
+    mongo: {
+        host: 'localhost',
+        database: 'koa',
+        port: 27027,
+        user: 'koa',
+        pass: 'secret'
     }
 }

@@ -1,74 +1,96 @@
-import Koa, {Context} from "koa";
+import Koa from "koa";
 import serve from "koa-static";
 import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
-import log from "../logger";
+import logWrite from "../logger";
 import routes from "../routes";
-import ErrorHandler from "../middlewares/ErrorHandler";
+import handleErrors from "../middlewares/ErrorHandler";
 import {Env} from "../types";
 import {ConfigOptions} from "../types/config";
-import {Server as httpServer} from "http";
-import path from 'path';
-import fs from 'fs';
+import path from "path";
+import http, {Server as HttpServer} from "http";
+import SocketIO, {Server as SocketIoServer} from "socket.io"
+import SocketModule from "../socket";
+import serveIndexHTML from '../middlewares/serveIndexHTML';
+import handleApiNotFound from '../middlewares/handleApiNotFound';
 
-export default class App {
-    app: Koa;
-    origin: string;
+export default class Server {
+    koa: Koa;
+    io: SocketIoServer;
     config: ConfigOptions;
+    httpServer: HttpServer;
     staticFolderPath: string;
-    indexFile: string;
+    socketModule: SocketModule;
 
     constructor(config: ConfigOptions) {
-        this.app = new Koa();
         this.config = config;
         // Makes publicly accessible React build folder
         this.staticFolderPath = path.join(__dirname, config.server.staticFolderPath);
+        // Allow any cross-domain requests when not Production environment
+        if (process.env.NODE_ENV === Env.Prod) {
+            this.config.origin = process.env.ORIGIN;
+        }
     }
 
-    init(): App {
-        this.app.use(ErrorHandler.handle);
-
-        if (process.env.NODE_ENV !== Env.Prod) {
-            this.config.origin = '*';
-        }
-
-        this.app.use(cors({
-            origin: this.config.origin
-        }));
-
-        this.app.use(bodyParser());
-
+    init(): Server {
+        this.koa = new Koa();
+        this.httpServer = http.createServer(this.koa.callback());
         const router = routes(this.config);
-        this.app.use(router.allowedMethods());
-        this.app.use(router.routes());
-
+        const indexHTMLPath = path.join(
+            this.staticFolderPath,
+            this.config.server.indexFile,
+        );
+        this.koa.use(handleErrors);
+        this.koa.use(cors({
+            origin: this.config.origin,
+            credentials: true,
+        }));
+        this.koa.use(bodyParser());
+        this.koa.use(router.allowedMethods());
+        this.koa.use(router.routes());
         // Serve files from public static folder
-        this.app.use(serve(this.staticFolderPath));
-
-        // Redirect all requests to index.html - for React-router
-        this.app.use(async (ctx) => {
-            try {
-                const index = path.join(this.staticFolderPath, this.config.server.indexFile);
-                ctx.body = fs.readFileSync(index, 'utf8');
-            } catch (error) {
-                log.error(error.message || error.toString());
-            }
+        this.koa.use(serve(this.staticFolderPath));
+        // When not found request goes to api endpoint return JSON formatted error
+        this.koa.use(handleApiNotFound(this.config.server.apiContextPath, this.koa));
+        // Redirect everything else to index.html - for React-router
+        this.koa.use(serveIndexHTML(indexHTMLPath, this.koa));
+        this.koa.on('error:server', errorMessage => {
+            logWrite.error(`[server] ${errorMessage}`);
         });
-
-        this.app.on('error', errorMessage => {
-            log.error(errorMessage);
+        this.koa.on('error:socket', errorMessage => {
+            logWrite.error(`[socket] ${errorMessage}`);
+        });
+        this.koa.on('debug', debugMessage => {
+            logWrite.error(`${debugMessage}`);
         });
 
         return this;
     }
 
-    start(): httpServer {
+    startSocket(): SocketModule {
+        // @ts-ignore
+        this.io = SocketIO(this.httpServer, {
+            path: '/socket.io',
+            serveClient: false,
+            // below are engine.IO options
+            pingInterval: 10000,
+            pingTimeout: 5000,
+            cookie: false,
+        });
+        this.socketModule = new SocketModule(this.io, this.koa);
+        this.socketModule.connectionHandler();
+        this.socketModule.sendUpdatesEvery(100)("milliseconds");
+
+        return this.socketModule;
+    }
+
+    startServer(): HttpServer {
         const {port, hostname, apiContextPath} = this.config.server;
 
-        return this.app.listen(port, hostname, () => {
-            log.debug(`Health-check - http://${hostname}:${port}/health-check`);
-            log.debug(`Example API endpoint - http://${hostname}:${port}${apiContextPath}/v1/users`);
-            log.debug('Server (re)started!');
+        return this.httpServer.listen(port, hostname, () => {
+            logWrite.debug(`Health-check - http://${hostname}:${port}/health-check`);
+            logWrite.debug(`Example API endpoint - http://${hostname}:${port}${apiContextPath}/v1/users`);
+            logWrite.debug('Server (re)started!');
         });
     }
 }

@@ -2,70 +2,30 @@ version: '3.8'
 services:
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secret
       MONGO_INITDB_DATABASE: koa
     ports:
-      - 27017:27017
-      - 27018:27018
+      - 27027:27017
     volumes:
-      - ./server/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - "./server/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro"
       - "mongo-data:/data/db"
     networks:
       - koa-net
+    expose:
+      - 27018
   mongo-express:
     depends_on:
       - mongo
     image: mongo-express
-    restart: always
+    restart: unless-stopped
     ports:
       - 8800:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: secret
-    networks:
-      - koa-net
-  react-app:
-    depends_on:
-      - koa-server
-    container_name: react-app
-    image: node:12.14.1
-    working_dir: /app
-    ports:
-      - 3000:3000
-    volumes:
-      - ./app:/app
-    command: >
-      /bin/bash -c "npm i && npm run start"
-    environment:
-      REACT_APP_BASE_URL: 'http://localhost:8080'
-    networks:
-      - koa-net
-  koa-server:
-    depends_on:
-      - mongo
-    restart: always
-    container_name: koa-server
-    image: node:12.14.1
-    working_dir: /koa/server
-    environment:
-      EXEC_ENV: docker
-      MONGO_DB_NAME: koa
-      MONGO_PORT: 27017
-      MONGO_HOST: mongo
-      MONGO_USER: koa
-      MONGO_PASS: secret
-      VERSION: 1.0.0
-#    env_file:
-#      - ./server/.env
-    ports:
-      - 8080:8080
-    volumes:
-      - .:/koa
-    command: >
-      /bin/bash -c "npm i && npm run mongo:up && npm run dev"
     networks:
       - koa-net
 networks:
