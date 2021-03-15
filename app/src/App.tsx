@@ -5,7 +5,7 @@ import Authentication from './pages/Authentication';
 import Main from './pages/Main';
 import Registration from './pages/Registration';
 import UserSignOut from './components/UserSignOut';
-import './App.scss';
+import './styles/App.scss';
 
 function App() {
 

@@ -3,8 +3,11 @@ import {httpClient} from '../services/HttpClient';
 import {AxiosResponse} from 'axios';
 
 type Register = {
-    username: string;
+    firstName: string;
+    lastName: string;
     password: string;
+    jobPosition: string;
+    personalNumber: string;
     email: string;
     confirmPassword: string;
 };

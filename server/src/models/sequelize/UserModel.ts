@@ -1,25 +1,30 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/User';
 import StringUtils from '../../helpers/StringUtils';
-import {Op} from 'sequelize';
 
 export type RequestAuthType = {
-    username: string;
+    email: string;
     password: string;
 };
 
 export type RequestUserType = {
+    firstName: string;
+    lastName: string;
+    jobPosition: string;
+    personalNumber: string;
     confirmPassword: string;
     email: string;
 } & RequestAuthType;
 
 export type UserType = {
     id: number;
-    username: string;
+    firstName: string;
+    lastName: string;
     password: string;
     email: string;
     role: number;
-    active: number;
+    status: number;
+    birthday: Date | null;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -32,7 +37,8 @@ export enum UserRole {
 export enum UserStatus {
     active = 1,
     disabled,
-    blocked
+    blocked,
+    pendingVerification
 }
 
 export default class UserModel extends BaseModelSequelize<typeof model> {
@@ -44,31 +50,31 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
     public async addNewUser(requestParam: RequestUserType): Promise<UserType> {
         const resultRow = await this.model.findOne({
             where: {
-                [Op.or]: [
-                    {username: requestParam.username},
-                    {email: requestParam.email}
-                ]
+                email: requestParam.email
             }
         });
 
         if (resultRow) {
-            throw new Error(`such username/email already taken`);
+            throw new Error(`such email already taken`);
         }
 
         const passwordHash = await StringUtils.hashPassword(requestParam.password);
         return await this.model.create({
-            username: requestParam.username,
+            firstName: requestParam.firstName,
+            lastName: requestParam.lastName,
+            jobPosition: requestParam.jobPosition,
+            personalNumber: requestParam.personalNumber,
             password: passwordHash,
             email: requestParam.email,
             role: UserRole.basic,
-            active: UserStatus.active
+            status: UserStatus.pendingVerification
         });
     }
 
     public async credentialsAreValid(requestParam: RequestAuthType): Promise<boolean | UserType> {
         const resultRow = await this.model.findOne({
             where: {
-                username: requestParam.username,
+                email: requestParam.email,
             }
         });
         // No such user record in the Database

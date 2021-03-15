@@ -1,7 +1,6 @@
 import BaseController from './BaseController';
 import {Context} from 'koa';
 import UserInterface from "./UserInterface";
-import UserModel from "../../models/mongo/UserModel";
 import UserModelSequelize, {UserType} from "../../models/sequelize/UserModel";
 import {authUserSchema, createUserSchema} from './validators/UserRequestValidator';
 import {HttpCode} from '../../types/errorHandler';
@@ -10,7 +9,6 @@ import {MyContext} from '../../types/koa';
 import Joi from 'joi';
 
 export type JwtPayload = {
-    username: string;
     email: string;
     userId: number;
     iat?: number;
@@ -29,10 +27,6 @@ class UserController extends BaseController implements UserInterface {
         );
     }
 
-    public async user(ctx: Context): Promise<void> {
-        ctx.body = 'ups...';
-    }
-
     // Provide user JWT expiration status
     public async status(ctx: MyContext): Promise<void> {
         const currentTimeSec = Math.ceil(new Date().valueOf() / 1000);
@@ -43,14 +37,8 @@ class UserController extends BaseController implements UserInterface {
     public async refreshToken(ctx: MyContext): Promise<void> {
         ctx.body = UserController.generateNewJWT({
             userId: ctx.store.userId,
-            username: ctx.store.username,
             email: ctx.store.email
         });
-    }
-
-    public async users(ctx: Context): Promise<void> {
-        const model = new UserModel();
-        ctx.body = await model.getAllUsers();
     }
 
     // User registration
@@ -83,7 +71,6 @@ class UserController extends BaseController implements UserInterface {
         // Generate JsonWebToke for authentication
         ctx.body = UserController.generateNewJWT({
             userId: user.id,
-            username: user.username,
             email: user.email
         });
     }

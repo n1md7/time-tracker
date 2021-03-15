@@ -7,16 +7,27 @@ import useRegister from "../hooks/useRegister";
 import logo from "../img/logo.png";
 
 export default function Registration() {
-    const [username, setUsername] = useInputChange('');
+    const [firstName, setFirstName] = useInputChange('');
+    const [lastName, setLastName] = useInputChange('');
     const [password, setPassword] = useInputChange('');
     const [email, setEmail] = useInputChange('');
+    const [personalNumber, setPersonalNumber] = useInputChange('');
+    const [jobPosition, setJobPosition] = useInputChange('');
     const [confirmPassword, setConfirmPassword] = useInputChange('');
     const [regHandler, isOk, regError, responseModifed] = useRegister();
     const history = useHistory();
 
     const onSubmit = (e) => {
         e.preventDefault();
-        regHandler({username, password, email, confirmPassword});
+        regHandler({
+            firstName,
+            lastName,
+            password,
+            email,
+            confirmPassword,
+            personalNumber,
+            jobPosition
+        });
     };
 
     useEffect(() => {
@@ -43,9 +54,24 @@ export default function Registration() {
                             <small className="form-text text-muted">Enter your E-mail</small>
                         </div>
                         <div className="form-group">
-                            <input minLength={5} onChange={setUsername}
-                                   className="form-control" placeholder="Username"/>
-                            <small className="form-text text-muted">Enter your username</small>
+                            <input minLength={5} onChange={setFirstName}
+                                   className="form-control" placeholder="First name"/>
+                            <small className="form-text text-muted">Enter your First Name</small>
+                        </div>
+                        <div className="form-group">
+                            <input minLength={5} onChange={setLastName}
+                                   className="form-control" placeholder="Last name"/>
+                            <small className="form-text text-muted">Enter your Last Name</small>
+                        </div>
+                        <div className="form-group">
+                            <input minLength={5} onChange={setJobPosition}
+                                   className="form-control" placeholder="Job position"/>
+                            <small className="form-text text-muted">Enter your Job Position</small>
+                        </div>
+                        <div className="form-group">
+                            <input minLength={5} onChange={setPersonalNumber}
+                                   className="form-control" placeholder="Personal number"/>
+                            <small className="form-text text-muted">Enter your Personal Number</small>
                         </div>
                         <div className="form-group">
                             <input minLength={8} onChange={setPassword} type="password"
@@ -54,7 +80,7 @@ export default function Registration() {
                         </div>
                         <div className="form-group">
                             <input minLength={8} onChange={setConfirmPassword} type="password"
-                                   className="form-control" placeholder="Confirm-password"/>
+                                   className="form-control" placeholder="Confirm password"/>
                             <small className="form-text text-muted">Confirm your password</small>
                         </div>
                         <div className="form-group text-center">

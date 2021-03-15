@@ -1,4 +1,4 @@
-# Template for Koa.js
+# Time-tracker
 
 ## Start database
 
@@ -30,3 +30,5 @@ npm run dev --prefix ./server
 npm run start --prefix ./app
 
 ```
+
+Source for Sequelize [link](https://sequelize.org/master/manual/model-querying-basics.html)

@@ -1,10 +1,10 @@
 {
-  "name": "koa-template",
+  "name": "time-trakcer",
   "version": "1.0.0",
-  "description": "koaJs template",
+  "description": "Time-tracker",
   "repository": {
     "type": "git",
-    "url": "git@github.com:bichiko/koajs-template.git"
+    "url": "git@github.com:bichiko/time-tracker.git"
   },
   "scripts": {
     "dev": "ts-node-dev src/index.ts",

@@ -7,14 +7,14 @@ import {Link} from "react-router-dom";
 import logo from "../img/logo.png";
 
 export default function Authentication() {
-    const [username, setUsername] = useInputChange('');
+    const [email, setEmail] = useInputChange('');
     const [password, setPassword] = useInputChange('');
     const [authHandler, isOk, authError, responseModified] = useAuthenticate();
     const history = useHistory();
 
     const onSubmit = (e) => {
         e.preventDefault();
-        authHandler({username, password});
+        authHandler({email, password});
     };
 
     useEffect(() => {
@@ -36,9 +36,9 @@ export default function Authentication() {
                     <h3 className="my-3 text-center">User Authentication</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <input minLength={5} onChange={setUsername} className="form-control"
-                                   placeholder="Username"/>
-                            <small className="form-text text-muted">Enter your username</small>
+                            <input minLength={5} onChange={setEmail} className="form-control"
+                                   placeholder="E-mail"/>
+                            <small className="form-text text-muted">Enter your E-mail address</small>
                         </div>
                         <div className="form-group">
                             <input minLength={8} onChange={setPassword} type="password"

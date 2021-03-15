@@ -1,0 +1,43 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/code";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/jumbotron";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/alert";
+
+
+.create-account {
+  font-size: 10px;
+  color: #282c34;
+  text-decoration: none;
+}
+
+.App-logo {
+  pointer-events: none;
+  width: 256px;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

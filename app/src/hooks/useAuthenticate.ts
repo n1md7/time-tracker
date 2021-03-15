@@ -5,7 +5,7 @@ import {AxiosResponse} from 'axios';
 import {Token} from '../types';
 
 type Auth = {
-    username: string;
+    email: string;
     password: string;
 };
 export default function useAuthenticate(): [(payload: Auth) => void, boolean, string, number] {

@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {ToastContainer} from 'react-toastify';
 import {BrowserRouter} from 'react-router-dom';
+import './styles/index.css';
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <App/>
-            <ToastContainer/>
+            <ToastContainer limit={5} newestOnTop={true}/>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
