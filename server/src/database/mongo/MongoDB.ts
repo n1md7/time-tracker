@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import logWrite from '../../logger';
-import config from '../../config';
 
 const initMongoDB = async (): Promise<typeof mongoose> => {
     const {
@@ -10,11 +9,11 @@ const initMongoDB = async (): Promise<typeof mongoose> => {
         MONGO_USER,
         MONGO_PASS
     } = process.env;
-    const user = MONGO_USER || config.mongo.user;
-    const pass = MONGO_PASS || config.mongo.pass;
-    const host = MONGO_HOST || config.mongo.host;
-    const port = MONGO_PORT || config.mongo.port;
-    const database = MONGO_DB_NAME || config.mongo.database;
+    const user = MONGO_USER;
+    const pass = MONGO_PASS;
+    const host = MONGO_HOST;
+    const port = MONGO_PORT;
+    const database = MONGO_DB_NAME;
     const connectionString = `mongodb://${user}:${pass}@${host}:${port}/${database}`;
 
     const mongoOptions = {

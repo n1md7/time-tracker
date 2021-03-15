@@ -1,4 +1,11 @@
-# Time Tracker
+# Time-tracker
+
+## Start database
+
+### MongoDb and MySql containers
+```bash
+docker-compose up
+```
 
 ## Install dependencies
 
@@ -24,9 +31,4 @@ npm run start --prefix ./app
 
 ```
 
-## Start database
-
-### MongoDb containers
-```bash
-docker-compose up
-```
+Source for Sequelize [link](https://sequelize.org/master/manual/model-querying-basics.html)
