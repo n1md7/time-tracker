@@ -15,19 +15,5 @@ export default {
         },
         timeStampFormat: 'YYYY-MM-DD HH:mm:ss:ms',
         excludeUrlsFromLogger: ['/health-check']
-    },
-    mysql: {
-        host: 'localhost',
-        user: 'root',
-        database: 'admin',
-        debug: false,
-        connectionLimit: 100
-    },
-    mongo: {
-        host: 'localhost',
-        database: 'koa',
-        port: 27027,
-        user: 'koa',
-        pass: 'secret'
     }
 }

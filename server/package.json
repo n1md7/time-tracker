@@ -1,10 +1,10 @@
 {
-  "name": "time-tracker",
+  "name": "koa-template",
   "version": "1.0.0",
-  "description": "Time-tracker",
+  "description": "koaJs template",
   "repository": {
     "type": "git",
-    "url": "git@github.com:bichiko/time-tracker.git"
+    "url": "git@github.com:bichiko/koajs-template.git"
   },
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
@@ -17,18 +17,23 @@
     "mongo:down": "npx migrate-mongo down",
     "mongo:status": "npx migrate-mongo status",
     "mongo:info": "echo 'Please visit https://github.com/seppevs/migrate-mongo'",
-    "mysql:add-migration": "node migrate-mysql.js add migration",
-    "mysql:add-seed": "node migrate-mysql.js add migration",
-    "mysql:up": "node migrate-mysql.js up",
-    "mysql:down": "node migrate-mysql.js down",
-    "mysql:info": "echo 'Please visit https://www.npmjs.com/package/mysql-migrations'",
+    "mysql:create:seed": "npx sequelize seed:generate --name ",
+    "mysql:create:migration": "npx sequelize migration:generate --name ",
+    "mysql:migrations": "npx sequelize db:migrate",
+    "mysql:migrations:undo": "npx sequelize db:migrate:undo ",
+    "mysql:migrations:undo:all": "npx sequelize db:migrate:undo:all",
+    "mysql:seeds": "npx sequelize db:seed:all",
+    "mysql:sequelize": "npx sequelize",
+    "mysql:info": "npx sequelize --help && echo '\nPlease visit https://sequelize.org/master/manual/migrations.html'",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
   "keywords": [
-    "time",
-    "tracker",
-    "time-tracker"
+    "koa",
+    "koajs",
+    "node",
+    "nodejs",
+    "template"
   ],
   "author": "harry kodua",
   "license": "MIT",
@@ -41,6 +46,7 @@
     "@types/koa-static": "^4.0.1",
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^14.14.25",
+    "@types/sequelize": "^4.28.9",
     "@types/socket.io": "^2.1.13",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
@@ -51,6 +57,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "jest": "^26.6.3",
+    "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.3",
     "ts-jest": "^26.5.0",
     "ts-node": "^9.1.1",
@@ -76,6 +83,8 @@
     "mysql-migrations": "^1.0.7",
     "mysql2": "^2.2.5",
     "node-cache": "^5.1.2",
+    "sequelize": "^6.5.0",
+    "sequelize-cli": "^6.2.0",
     "socket.io": "^4.0.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"

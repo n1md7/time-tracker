@@ -1,4 +1,11 @@
-# Time Tracker
+# Template for Koa.js
+
+## Start database
+
+### MongoDb and MySql containers
+```bash
+docker-compose up
+```
 
 ## Install dependencies
 
@@ -22,11 +29,4 @@ npm run mongo:up
 npm run dev --prefix ./server
 npm run start --prefix ./app
 
-```
-
-## Start database
-
-### MongoDb containers
-```bash
-docker-compose up
 ```

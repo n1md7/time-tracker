@@ -2,24 +2,6 @@ export type ConfigOptions = {
     server: ServerConfig,
     origin: string,
     loggerOptions: LoggerOptions,
-    mysql: MySql,
-    mongo: Mongo
-}
-
-type MySql = {
-    host: string,
-    user: string,
-    database: string,
-    debug: boolean,
-    connectionLimit: number,
-}
-
-type Mongo = {
-    host: string,
-    user: string,
-    database: string,
-    port: number,
-    pass: string,
 }
 
 export type ServerConfig = {

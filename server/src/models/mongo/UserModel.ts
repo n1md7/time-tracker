@@ -1,6 +1,6 @@
-import BaseModelMongo from "./BaseModelMongo";
-import {UserType} from "../types/user";
-import {UserSchema, collectionName} from "../database/mongo/schema/User";
+import BaseModelMongo from "../BaseModelMongo";
+import {UserType} from "../../types/user";
+import {UserSchema, collectionName} from "../../database/mongo/schema/User";
 
 export default class UserModel extends BaseModelMongo<UserType> {
     constructor() {

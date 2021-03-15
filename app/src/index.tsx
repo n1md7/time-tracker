@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 import App from './App';
-import {Provider} from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import {ToastContainer} from 'react-toastify';
 import {BrowserRouter} from 'react-router-dom';
-import store from './redux/store';
-import './index.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App/>
-                <ToastContainer/>
-            </BrowserRouter>
-        </Provider>
+        <BrowserRouter>
+            <App/>
+            <ToastContainer/>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );
