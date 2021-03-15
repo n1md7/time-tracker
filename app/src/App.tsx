@@ -5,6 +5,8 @@ import Authentication from './pages/Authentication';
 import Main from './pages/Main';
 import Registration from './pages/Registration';
 import UserSignOut from './components/UserSignOut';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 import './styles/App.scss';
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
             <Route path="/sign-up" component={Registration}/>
             <Route path="/sign-out" component={UserSignOut}/>
             <ProtectedRoute path="/" exact component={Main}/>
+            <ProtectedRoute path="/settings" exact component={Settings}/>
+            <ProtectedRoute path="/profile" exact component={Profile}/>
             <Redirect to="/"/>
         </Switch>
     );

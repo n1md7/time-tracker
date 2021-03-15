@@ -63,7 +63,7 @@ export default function useTokenUpdate(): [boolean, boolean, string] {
 
     useEffect(() => {
         // Check expiration every minute
-        const timer = setInterval(checkExpiration, 60 * 100);
+        const timer = setInterval(checkExpiration, 60 * 1000);
         return () => clearInterval(timer);
     }, []);
 
