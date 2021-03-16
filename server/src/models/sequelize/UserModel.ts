@@ -38,7 +38,8 @@ export enum UserStatus {
     active = 1,
     disabled,
     blocked,
-    pendingVerification
+    pendingVerification,
+    pendingPayment
 }
 
 export default class UserModel extends BaseModelSequelize<typeof model> {

@@ -13,8 +13,9 @@ export default function NavBar({children = []}) {
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Link className="nav-link" to={{pathname: '/sign-in'}}>Login</Link>
-                        <Link className="nav-link" to={{pathname: '/sign-up'}}>Register</Link>
+                        <Link className="nav-link" to={{pathname: '/projects'}}>Projects</Link>
+                        <Link className="nav-link" to={{pathname: '/teams'}}>Teams</Link>
+                        <Link className="nav-link" to={{pathname: '/members'}}>Members</Link>
                     </Nav>
                     <Nav className="mr-lg-5">
                         <NavDropdown title="Dropdown" id="user-nav-dropdown">
