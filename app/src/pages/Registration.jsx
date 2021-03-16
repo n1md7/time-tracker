@@ -14,7 +14,7 @@ export default function Registration() {
     const [personalNumber, setPersonalNumber] = useInputChange('');
     const [jobPosition, setJobPosition] = useInputChange('');
     const [confirmPassword, setConfirmPassword] = useInputChange('');
-    const [regHandler, isOk, regError, responseModifed] = useRegister();
+    const [regHandler, isOk, regError, responseModified, disabled] = useRegister();
     const history = useHistory();
 
     const onSubmit = (e) => {
@@ -36,7 +36,7 @@ export default function Registration() {
             history.push('/sign-in');
         }
         regError && Alert(regError, AlertType.ERROR);
-    }, [responseModifed]);
+    }, [responseModified]);
 
     return (
         <div className="container">
@@ -84,7 +84,10 @@ export default function Registration() {
                             <small className="form-text text-muted">Confirm your password</small>
                         </div>
                         <div className="form-group text-center">
-                            <button type="submit" className="btn btn-outline-secondary form-control">Sign up</button>
+                            <button disabled={disabled} type="submit"
+                                    className="btn btn-outline-secondary form-control">
+                                Sign up
+                            </button>
                         </div>
                         <div className="form-group text-center">
                             <Link className="create-account" to={{

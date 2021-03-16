@@ -11,12 +11,14 @@ type Register = {
     email: string;
     confirmPassword: string;
 };
-export default function useRegister(): [(payload: Register) => void, boolean, string, number] {
+export default function useRegister(): [(payload: Register) => void, boolean, string, number, boolean] {
     const [isOk, setIsOk] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [counter, setCounter] = useState<number>(0);
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     const registrationHandler = (payload: Register) => {
+        setSubmitted(true);
         httpClient
             .post<AxiosResponse, AxiosResponse<string>>('v1/user/new', payload)
             .then((response) => {
@@ -33,8 +35,9 @@ export default function useRegister(): [(payload: Register) => void, boolean, st
             })
             .finally(() => {
                 setCounter(counter + 1);
+                setSubmitted(false);
             });
     }
 
-    return [registrationHandler, isOk, error, counter];
+    return [registrationHandler, isOk, error, counter, submitted];
 };
