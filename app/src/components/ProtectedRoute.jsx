@@ -1,14 +1,13 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import useTokenUpdate from "../hooks/useTokenUpdate";
+import Loading from "./Loading";
 
 const ProtectedRoute = (props) => {
     const [isAuth, isLoading, errorMessage] = useTokenUpdate();
 
     if (isLoading) {
-        return (
-            <div>Loading...</div>
-        );
+        return <Loading/>;
     }
 
     return !isAuth && !isLoading ?

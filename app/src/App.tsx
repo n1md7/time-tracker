@@ -7,6 +7,9 @@ import Registration from './pages/Registration';
 import UserSignOut from './components/UserSignOut';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import Members from './pages/Members';
+import Teams from './pages/Teams';
+import Projects from './pages/Projects';
 import './styles/App.scss';
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
             <ProtectedRoute path="/" exact component={Main}/>
             <ProtectedRoute path="/settings" exact component={Settings}/>
             <ProtectedRoute path="/profile" exact component={Profile}/>
+            <ProtectedRoute path="/members" exact component={Members}/>
+            <ProtectedRoute path="/teams" exact component={Teams}/>
+            <ProtectedRoute path="/projects" exact component={Projects}/>
             <Redirect to="/"/>
         </Switch>
     );

@@ -9,7 +9,7 @@ import logo from "../img/logo.png";
 export default function Authentication() {
     const [email, setEmail] = useInputChange('');
     const [password, setPassword] = useInputChange('');
-    const [authHandler, isOk, authError, responseModified] = useAuthenticate();
+    const [authHandler, isOk, authError, responseModified, disabled] = useAuthenticate();
     const history = useHistory();
 
     const onSubmit = (e) => {
@@ -46,7 +46,10 @@ export default function Authentication() {
                             <small className="form-text text-muted">Enter your password</small>
                         </div>
                         <div className="form-group text-center">
-                            <button type="submit" className="btn btn-primary form-control">Authenticate</button>
+                            <button disabled={disabled} type="submit"
+                                    className="btn btn-primary form-control">
+                                Authenticate
+                            </button>
                         </div>
                         <div className="form-group text-center">
                             <Link className="create-account" to={{
