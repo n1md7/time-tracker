@@ -1,0 +1,63 @@
+import BaseModelSequelize from '../BaseModelSequelize';
+import model, {tableName} from '../../database/sequelize/schema/Team';
+import {MysqlUpdateException} from "../../exceptions";
+
+export type RequestTeamType = {
+    name: string;
+    description: string;
+    projectId: number;
+};
+
+export type TeamType = {
+    id: number;
+    name: string;
+    description: string;
+    createdBy: number;
+    projectId: number;
+    status: TeamStatus;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export enum TeamStatus {
+    active = 1,
+    disabled,
+}
+
+export default class TeamModel extends BaseModelSequelize<typeof model> {
+
+    constructor() {
+        super(model, tableName);
+    }
+
+    public async addNewTeam(requestParam: RequestTeamType, userId: number): Promise<TeamType> {
+
+        return await this.model.create({
+            name: requestParam.name,
+            description: requestParam.description,
+            createdBy: userId,
+            projectId: requestParam.projectId,
+            status: TeamStatus.active,
+        });
+    }
+
+    public async getTeamsByProjectId(projectId: number): Promise<TeamType[]> {
+
+        return await this.model.findAll({
+            where: {projectId}
+        });
+    }
+
+    public async updateProjectIdByTeamId(teamId: number, projectId: number): Promise<void> {
+        const [affectedRows] = await this.model.update({projectId}, {
+            where: {
+                id: teamId
+            }
+        });
+
+        if (affectedRows === 0) {
+            throw new MysqlUpdateException(`updateProjectIdByTeamId(${teamId}, where: ${projectId}) didn't modify the record`);
+        }
+    }
+
+}

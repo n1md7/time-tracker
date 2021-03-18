@@ -1,6 +1,7 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/User';
 import StringUtils from '../../helpers/StringUtils';
+import {MysqlUpdateException} from "../../exceptions";
 
 export type RequestAuthType = {
     email: string;
@@ -93,15 +94,22 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
         return user;
     }
 
-    public async updateRoleById(id: number, role: UserRole): Promise<Array<number>> {
-        return await this.model.update({role}, {
+    public async updateRoleById(id: number, role: UserRole): Promise<void> {
+        const [affectedRows] = await this.model.update({role}, {
             where: {id}
         });
+
+        if (affectedRows === 0) {
+            throw new MysqlUpdateException(`updateRoleById(${id}, where: ${role}) didn't modify the record`);
+        }
     }
 
-    public async updateStatusById(id: number, status: UserStatus): Promise<Array<number>> {
-        return await this.model.update({status}, {
+    public async updateStatusById(id: number, status: UserStatus): Promise<void> {
+        const [affectedRows] = await this.model.update({status}, {
             where: {id}
         });
+        if (affectedRows === 0) {
+            throw new MysqlUpdateException(`updateStatusById(${id}, where: ${status}) didn't modify the record`);
+        }
     }
 }

@@ -31,4 +31,6 @@ npm run start --prefix ./app
 
 ```
 
-Source for Sequelize [link](https://sequelize.org/master/manual/model-querying-basics.html)
+- Source for Sequelize [link](https://sequelize.org/master/manual/model-querying-basics.html)
+- Source for Casual [link](https://github.com/boo1ean/casual)
+- Source for Faker [link](https://github.com/danibram/mocker-data-generator#readme)

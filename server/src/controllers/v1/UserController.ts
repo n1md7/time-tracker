@@ -1,13 +1,13 @@
 import BaseController from './BaseController';
 import {Context} from 'koa';
 import UserInterface from "./interfaces/UserInterface";
-import UserModelSequelize, {UserRole, UserType} from "../../models/sequelize/UserModel";
+import UserModelSequelize, {UserType} from "../../models/sequelize/UserModel";
 import {authUserSchema, createUserSchema} from './validators/UserRequestValidator';
 import {HttpCode} from '../../types/errorHandler';
 import JsonWebToken from 'jsonwebtoken';
 import {MyContext} from '../../types/koa';
 import Joi from 'joi';
-import UserFactory from "../../factory/UserFactory";
+import {PasswordsNotMatchException, RequestValidationException} from "../../exceptions";
 
 export type JwtPayload = {
     email: string;
@@ -46,10 +46,10 @@ class UserController extends BaseController implements UserInterface {
     public async createNewUser(ctx: Context): Promise<void> {
         const validation = createUserSchema.validate(ctx.request.body);
         if (validation.error as Joi.ValidationError) {
-            throw new Error(validation.error.details.pop().message);
+            throw new RequestValidationException(validation.error.details);
         }
         if (validation.value.password !== validation.value.confirmPassword) {
-            throw new Error("'password' and 'confirmPassword' didn't match!");
+            throw new PasswordsNotMatchException("'password' and 'confirmPassword' didn't match!");
         }
         const model = new UserModelSequelize();
         await model.addNewUser(validation.value);
@@ -59,12 +59,9 @@ class UserController extends BaseController implements UserInterface {
 
     // User authentication
     public async authenticateUser(ctx: Context): Promise<void | typeof ctx.status> {
-        const fakeUser = await new UserFactory().generate();
-        await new UserModelSequelize().addNewUser(fakeUser);
-
         const validation = authUserSchema.validate(ctx.request.body);
         if (validation.error as Joi.ValidationError) {
-            throw new Error(validation.error.details.pop().message);
+            throw new RequestValidationException(validation.error.details);
         }
         const model = new UserModelSequelize();
         const user = await model.credentialsAreValid(validation.value) as UserType;

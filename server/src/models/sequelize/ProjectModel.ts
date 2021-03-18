@@ -1,6 +1,6 @@
 import BaseModelSequelize from '../BaseModelSequelize';
-import model, {tableName} from '../../database/sequelize/schema/User';
-import StringUtils from '../../helpers/StringUtils';
+import model, {tableName} from '../../database/sequelize/schema/Project';
+import {MysqlUpdateException} from "../../exceptions";
 
 export type RequestProjectType = {
     name: string;
@@ -38,13 +38,22 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
         });
     }
 
+    public async getProjectsByUserId(userId: number): Promise<ProjectType[]> {
+
+        return await this.model.findAll({
+            where: {
+                createdBy: userId
+            }
+        });
+    }
+
     public async updateNameById(id: number, name: string): Promise<void> {
         const [affectedRows] = await this.model.update({name}, {
             where: {id}
         });
 
-        if(affectedRows === 0){
-            throw new Error('database row did not update');
+        if (affectedRows === 0) {
+            throw new MysqlUpdateException(`updateNameById(${name}, where: ${id}) didn't modify the record`);
         }
     }
 
@@ -53,8 +62,8 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
             where: {id}
         });
 
-        if(affectedRows === 0){
-            throw new Error('database row did not update');
+        if (affectedRows === 0) {
+            throw new MysqlUpdateException(`updateDescriptionById(${description}, where: ${id}) didn't modify the record`);
         }
     }
 }

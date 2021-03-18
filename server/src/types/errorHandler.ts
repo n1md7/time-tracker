@@ -32,6 +32,9 @@ export enum ErrorType {
 
 export enum ExceptionType {
     validationErrorException = 'ValidationErrorException',
+    requestValidationException = 'RequestValidationException',
+    mysqlUpdateException = 'MysqlUpdateException',
+    passwordsNotMatchException = 'PasswordsNotMatchException',
 }
 
 export enum MongoErrorCode {

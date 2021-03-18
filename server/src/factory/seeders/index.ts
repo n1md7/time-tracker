@@ -7,6 +7,7 @@ import config from "../../config";
 import Server from "../../server";
 import logWrite from '../../logger';
 import createAdminUser from "./CreateAdminUser";
+import createProject from "./CreateProject";
 
 ( async () => {
     config.server.port = 8761;
@@ -19,7 +20,8 @@ import createAdminUser from "./CreateAdminUser";
         koa.startServer();
 
         logWrite.info('Starting custom seeder...');
-        await createAdminUser();
+        const userId = await createAdminUser();
+        await createProject(userId);
         logWrite.info('Seeding finished. Stopping server...');
         koa.httpServer.close();
         logWrite.info('koa server stopped!');

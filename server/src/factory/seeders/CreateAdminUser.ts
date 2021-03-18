@@ -1,7 +1,7 @@
 import UserModel, {UserRole, UserStatus} from "../../models/sequelize/UserModel";
 import UserFactory from "../UserFactory";
 
-export default async function createAdminUser(): Promise<void> {
+export default async function createAdminUser(): Promise<number> {
     const generatedUser = await new UserFactory().generate({
         firstName: 'Admin',
         lastName: 'Nimda',
@@ -15,4 +15,6 @@ export default async function createAdminUser(): Promise<void> {
     const savedUser = await userModel.addNewUser(generatedUser);
     await userModel.updateRoleById(savedUser.id, UserRole.admin);
     await userModel.updateStatusById(savedUser.id, UserStatus.active);
+
+    return savedUser.id;
 }
