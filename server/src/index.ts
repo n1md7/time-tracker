@@ -10,7 +10,7 @@ import logWrite from './logger';
 ( async () => {
     try {
         // When DB is not accessible fail the app
-        await initMongoDB();
+        // await initMongoDB();
         await Sequelize.authenticate();
         // Start Koa server
         const koa = new Server(config);

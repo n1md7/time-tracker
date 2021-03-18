@@ -9,45 +9,23 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.createTable('users', {
+        await queryInterface.createTable('members', {
             id: {
                 type: Sequelize.BIGINT,
                 primaryKey: true,
                 autoIncrement: true
             },
-            firstName: {
-                type: Sequelize.STRING(32),
+            userId: {
+                type: Sequelize.INTEGER(11),
                 allowNull: false
             },
-            lastName: {
-                type: Sequelize.STRING(32),
+            teamId: {
+                type: Sequelize.INTEGER(11),
                 allowNull: false
             },
-            password: {
-                type: Sequelize.STRING(512),
-                allowNull: true,
-                defaultValue: null
-            },
-            email: {
-                type: Sequelize.STRING(128),
+            createdBy: {
+                type: Sequelize.INTEGER(11),
                 allowNull: false
-            },
-            personalNumber: {
-                type: Sequelize.STRING(11),
-                allowNull: false
-            },
-            jobPosition: {
-                type: Sequelize.STRING(128),
-                allowNull: false
-            },
-            role: {
-                type: Sequelize.INTEGER(2),
-                allowNull: false
-            },
-            birthday: {
-                type: Sequelize.DATE,
-                defaultValue: null,
-                allowNull: true
             },
             status: {
                 type: Sequelize.INTEGER(2),
@@ -67,7 +45,7 @@ module.exports = {
         });
 
         // Add index BTREE to E-mail field
-        await queryInterface.addIndex('users', ['email']);
+        await queryInterface.addIndex('members', ['userId', 'teamId']);
     },
 
     down: async (queryInterface, Sequelize) => {
@@ -77,6 +55,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable('users');
+        await queryInterface.dropTable('members');
     }
 };

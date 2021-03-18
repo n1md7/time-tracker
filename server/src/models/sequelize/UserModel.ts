@@ -92,4 +92,16 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
 
         return user;
     }
+
+    public async updateRoleById(id: number, role: UserRole): Promise<Array<number>> {
+        return await this.model.update({role}, {
+            where: {id}
+        });
+    }
+
+    public async updateStatusById(id: number, status: UserStatus): Promise<Array<number>> {
+        return await this.model.update({status}, {
+            where: {id}
+        });
+    }
 }

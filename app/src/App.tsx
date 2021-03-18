@@ -20,11 +20,11 @@ function App() {
             <Route path="/sign-up" component={Registration}/>
             <Route path="/sign-out" component={UserSignOut}/>
             <ProtectedRoute path="/" exact component={Main}/>
-            <ProtectedRoute path="/settings" exact component={Settings}/>
-            <ProtectedRoute path="/profile" exact component={Profile}/>
-            <ProtectedRoute path="/members" exact component={Members}/>
-            <ProtectedRoute path="/teams" exact component={Teams}/>
-            <ProtectedRoute path="/projects" exact component={Projects}/>
+            <ProtectedRoute path="/settings" component={Settings}/>
+            <ProtectedRoute path="/profile" component={Profile}/>
+            <ProtectedRoute path="/members" component={Members}/>
+            <ProtectedRoute path="/teams" component={Teams}/>
+            <ProtectedRoute path="/projects" component={Projects}/>
             <Redirect to="/"/>
         </Switch>
     );

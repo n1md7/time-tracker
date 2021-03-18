@@ -1,12 +1,13 @@
 import BaseController from './BaseController';
 import {Context} from 'koa';
-import UserInterface from "./UserInterface";
-import UserModelSequelize, {UserType} from "../../models/sequelize/UserModel";
+import UserInterface from "./interfaces/UserInterface";
+import UserModelSequelize, {UserRole, UserType} from "../../models/sequelize/UserModel";
 import {authUserSchema, createUserSchema} from './validators/UserRequestValidator';
 import {HttpCode} from '../../types/errorHandler';
 import JsonWebToken from 'jsonwebtoken';
 import {MyContext} from '../../types/koa';
 import Joi from 'joi';
+import UserFactory from "../../factory/UserFactory";
 
 export type JwtPayload = {
     email: string;
@@ -58,6 +59,9 @@ class UserController extends BaseController implements UserInterface {
 
     // User authentication
     public async authenticateUser(ctx: Context): Promise<void | typeof ctx.status> {
+        const fakeUser = await new UserFactory().generate();
+        await new UserModelSequelize().addNewUser(fakeUser);
+
         const validation = authUserSchema.validate(ctx.request.body);
         if (validation.error as Joi.ValidationError) {
             throw new Error(validation.error.details.pop().message);

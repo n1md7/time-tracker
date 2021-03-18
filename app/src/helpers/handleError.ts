@@ -1,4 +1,4 @@
-import {Alert, AlertType} from './toaster';
+import Alert, {AlertType} from '../components/Alert';
 import {AxiosError} from 'axios';
 
 export default (error: AxiosError): string => {
@@ -14,7 +14,7 @@ export default (error: AxiosError): string => {
     // Something happened in setting up the request that triggered an Error
     message = error.message;
   }
-  Alert(AlertType.ERROR, message, 10);
+  Alert(message, AlertType.ERROR,10);
 
   return message;
 };

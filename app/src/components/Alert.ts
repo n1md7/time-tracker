@@ -17,6 +17,5 @@ export default function Alert(message: string, type: AlertType = AlertType.INFO,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
     });
 }
