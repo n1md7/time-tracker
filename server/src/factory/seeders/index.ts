@@ -8,8 +8,9 @@ import Server from "../../server";
 import logWrite from '../../logger';
 import createAdminUser from "./CreateAdminUser";
 import createProject from "./CreateProject";
+import createTeam from "./CreateTeam";
 
-( async () => {
+(async () => {
     config.server.port = 8761;
     try {
         // When DB is not accessible fail the app
@@ -20,8 +21,9 @@ import createProject from "./CreateProject";
         koa.startServer();
 
         logWrite.info('Starting custom seeder...');
-        const userId = await createAdminUser();
-        await createProject(userId);
+        const user = await createAdminUser();
+        const project = await createProject(user.id);
+        const team = await createTeam(project.id, user.id);
         logWrite.info('Seeding finished. Stopping server...');
         koa.httpServer.close();
         logWrite.info('koa server stopped!');
@@ -29,4 +31,4 @@ import createProject from "./CreateProject";
         logWrite.error(error.message || error.toString());
         process.exit(1);
     }
-} )();
+})();
