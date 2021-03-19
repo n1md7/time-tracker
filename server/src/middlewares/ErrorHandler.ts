@@ -26,6 +26,7 @@ class ErrorHandler {
 
         switch (error.name) {
             case ExceptionType.validationErrorException:
+            case ExceptionType.passwordsNotMatchException:
             case ExceptionType.requestValidationException:
                 ctx.status = HttpCode.badRequest;
                 ctx.body = error.message;

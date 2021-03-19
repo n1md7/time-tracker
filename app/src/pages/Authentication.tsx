@@ -1,20 +1,38 @@
 import useInputChange from "../hooks/useChange";
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import useAuthenticate from "../hooks/useAuthenticate";
 import {useHistory} from "react-router";
 import Alert, {AlertType} from "../components/Alert";
 import {Link} from "react-router-dom";
 import logo from "../img/logo.png";
 
+enum Field {
+    email = 'email',
+    password = 'password'
+}
+
 export default function Authentication() {
     const [email, setEmail] = useInputChange('');
     const [password, setPassword] = useInputChange('');
-    const [authHandler, isOk, authError, responseModified, disabled] = useAuthenticate();
+    const [submitted, setSubmitted] = useState<boolean>(false);
+    const [authHandler, isOk, authError, responseModified, disabled, errorFields] = useAuthenticate();
     const history = useHistory();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
         authHandler({email, password});
+        setSubmitted(true);
+    };
+
+    const showError = (field: Field): string => {
+        if (submitted) {
+            if (errorFields.includes(field)) {
+                return 'form-control is-invalid';
+            }
+        }
+
+        return 'form-control';
     };
 
     useEffect(() => {
@@ -36,18 +54,26 @@ export default function Authentication() {
                     <h3 className="my-3 text-center">User Authentication</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <input minLength={5} onChange={setEmail} className="form-control"
-                                   placeholder="E-mail"/>
                             <small className="form-text text-muted">Enter your E-mail address</small>
+                            <input type="email"
+                                   onChange={setEmail}
+                                   className={showError(Field.email)}
+                                   placeholder="E-mail"/>
+                            <div className="invalid-feedback">
+                                Please use valid E-mail address
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={8} onChange={setPassword} type="password"
-                                   className="form-control" placeholder="Password"/>
                             <small className="form-text text-muted">Enter your password</small>
+                            <input onChange={setPassword} type="password"
+                                   className={showError(Field.password)} placeholder="Password"/>
+                            <div className="invalid-feedback">
+                                Password must be at least 8 characters long
+                            </div>
                         </div>
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
-                                    className="btn btn-primary form-control">
+                                    className="btn btn-primary w-100">
                                 Authenticate
                             </button>
                         </div>

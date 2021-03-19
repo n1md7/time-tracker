@@ -8,27 +8,47 @@ type Auth = {
     email: string;
     password: string;
 };
-export default function useAuthenticate(): [(payload: Auth) => void, boolean, string, number, boolean] {
+
+export interface JoyErrorItem {
+    context: {
+        key: string;
+        label: string;
+        value: string;
+    };
+    path: string[];
+    type: string
+}
+
+export default function useAuthenticate(): [(payload: Auth) => void, boolean, string, number, boolean, string[]] {
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [errorFields, setErrorFields] = useState<Array<string>>([]);
     const [counter, setCounter] = useState<number>(0);
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     const authenticationHandler = (payload: Auth) => {
         setSubmitted(true);
         httpClient
-            .post<AxiosResponse, AxiosResponse<string>>('v1/user/auth', payload)
+            .post<AxiosResponse, AxiosResponse<string | JoyErrorItem[]>>('v1/user/auth', payload)
             .then((response) => {
                 if (response.status === 200) {
+                    const token = response.data as string;
                     setIsAuth(true);
                     // Dispatch to redux-store to update headers of httpClient
-                    store.dispatch(actionUpdate({token: response.data}));
+                    store.dispatch(actionUpdate({token}));
                     // Save in localStorage
-                    localStorage.setItem(Token.name, response.data);
+                    localStorage.setItem(Token.name, token);
                     setError("");
                 } else if (response.status === 400) {
-                    setError(response.data);
+                    if (response.data instanceof Array) {
+                        const joyErrorItem = response.data as JoyErrorItem[];
+                        setErrorFields(joyErrorItem.map(({context: {key}}) => key));
+                    } else {
+                        setError(response.data as string);
+                        setErrorFields([]);
+                    }
                 } else {
+                    setErrorFields([]);
                     setError("Incorrect username or password");
                 }
             })
@@ -42,5 +62,5 @@ export default function useAuthenticate(): [(payload: Auth) => void, boolean, st
             });
     }
 
-    return [authenticationHandler, isAuth, error, counter, submitted];
+    return [authenticationHandler, isAuth, error, counter, submitted, errorFields];
 };

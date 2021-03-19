@@ -1,10 +1,20 @@
 import useInputChange from "../hooks/useChange";
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import Alert, {AlertType} from "../components/Alert";
 import {Link} from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import logo from "../img/logo.png";
+
+enum Field {
+    email = 'email',
+    firstName = 'firstName',
+    lastName = 'lastName',
+    jobPosition = 'jobPosition',
+    personalNumber = 'personalNumber',
+    password = 'password',
+    confirmPassword = 'confirmPassword'
+}
 
 export default function Registration() {
     const [firstName, setFirstName] = useInputChange('');
@@ -14,11 +24,14 @@ export default function Registration() {
     const [personalNumber, setPersonalNumber] = useInputChange('');
     const [jobPosition, setJobPosition] = useInputChange('');
     const [confirmPassword, setConfirmPassword] = useInputChange('');
-    const [regHandler, isOk, regError, responseModified, disabled] = useRegister();
+    const [regHandler, isOk, regError, responseModified, disabled, errorFields] = useRegister();
+    const [submitted, setSubmitted] = useState<boolean>(false);
     const history = useHistory();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setSubmitted(true);
         regHandler({
             firstName,
             lastName,
@@ -28,6 +41,16 @@ export default function Registration() {
             personalNumber,
             jobPosition
         });
+    };
+
+    const showError = (field: Field): string => {
+        if (submitted) {
+            if (errorFields.includes(field)) {
+                return 'form-control is-invalid';
+            }
+        }
+
+        return 'form-control';
     };
 
     useEffect(() => {
@@ -49,43 +72,64 @@ export default function Registration() {
                     <h3 className="my-3 text-center">User Registration</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <input minLength={5} onChange={setEmail}
-                                   className="form-control" placeholder="E-mail"/>
                             <small className="form-text text-muted">Enter your E-mail</small>
+                            <input onChange={setEmail}
+                                   className={showError(Field.email)} placeholder="E-mail"/>
+                            <div className="invalid-feedback">
+                                Please use valid E-mail address
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={5} onChange={setFirstName}
-                                   className="form-control" placeholder="First name"/>
                             <small className="form-text text-muted">Enter your First Name</small>
+                            <input onChange={setFirstName}
+                                   className={showError(Field.firstName)} placeholder="First name"/>
+                            <div className="invalid-feedback">
+                                Minimum 2 and maximum 32 alphabetic characters
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={5} onChange={setLastName}
-                                   className="form-control" placeholder="Last name"/>
                             <small className="form-text text-muted">Enter your Last Name</small>
+                            <input onChange={setLastName}
+                                   className={showError(Field.lastName)} placeholder="Last name"/>
+                            <div className="invalid-feedback">
+                                Minimum 2 and maximum 32 alphabetic characters
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={5} onChange={setJobPosition}
-                                   className="form-control" placeholder="Job position"/>
                             <small className="form-text text-muted">Enter your Job Position</small>
+                            <input onChange={setJobPosition}
+                                   className={showError(Field.jobPosition)} placeholder="Job position"/>
+                            <div className="invalid-feedback">
+                                Minimum 2 and maximum 128 alphabetic characters
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={5} onChange={setPersonalNumber}
-                                   className="form-control" placeholder="Personal number"/>
                             <small className="form-text text-muted">Enter your Personal Number</small>
+                            <input onChange={setPersonalNumber}
+                                   className={showError(Field.personalNumber)} placeholder="Personal number"/>
+                            <div className="invalid-feedback">
+                                Should be 11 numbers long. e.g 01234567890
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={8} onChange={setPassword} type="password"
-                                   className="form-control" placeholder="Password"/>
                             <small className="form-text text-muted">Enter your password</small>
+                            <input onChange={setPassword} type="password"
+                                   className={showError(Field.password)} placeholder="Password"/>
+                            <div className="invalid-feedback">
+                                Minimum 8 and maximum 128 characters
+                            </div>
                         </div>
                         <div className="form-group">
-                            <input minLength={8} onChange={setConfirmPassword} type="password"
-                                   className="form-control" placeholder="Confirm password"/>
                             <small className="form-text text-muted">Confirm your password</small>
+                            <input onChange={setConfirmPassword} type="password"
+                                   className={showError(Field.confirmPassword)} placeholder="Confirm password"/>
+                            <div className="invalid-feedback">
+                                Minimum 8 and maximum 128 characters
+                            </div>
                         </div>
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
-                                    className="btn btn-outline-secondary form-control">
+                                    className="btn btn-outline-secondary w-100">
                                 Sign up
                             </button>
                         </div>

@@ -8,7 +8,7 @@ export default async function createAdminUser(): Promise<UserType> {
         jobPosition: 'Full-stack Developer',
         personalNumber: '19000001087',
         password: process.env.ADMIN_USER_PASSWORD || 'admin.nimda',
-        confirmPassword: 'admin.nimda',
+        confirmPassword: process.env.ADMIN_USER_PASSWORD || 'admin.nimda',
         email: 'admin@admin.com'
     });
     const userModel = new UserModel();
