@@ -1,15 +1,14 @@
-import {useState} from "react";
 import {httpClient} from '../services/HttpClient';
 import {AxiosResponse} from 'axios';
 import Alert, {AlertType} from "../components/Alert";
-
-type Project = {
-    name: string;
-    description: string;
-};
+import {useDispatch, useSelector} from "react-redux";
+import {RootReducer} from "../redux/reducers";
+import {updateProjects} from "../redux/actions";
+import {Project} from "../types";
 
 export default function useFetchProjects(): [() => void, Project[]] {
-    const [data, setData] = useState<Project[]>([]);
+    const dispatch = useDispatch();
+    const projects = useSelector<RootReducer, Project[]>(({projects}) => projects.all);
 
     const fetchProjects = () => {
         httpClient
@@ -18,7 +17,7 @@ export default function useFetchProjects(): [() => void, Project[]] {
                 if (response.status === 200) {
                     const projects = response.data as Project[];
                     projects.sort().reverse();
-                    setData(projects);
+                    dispatch(updateProjects({all: projects}));
                 } else {
                     Alert(response.data as string, AlertType.ERROR);
                 }
@@ -28,5 +27,5 @@ export default function useFetchProjects(): [() => void, Project[]] {
             });
     }
 
-    return [fetchProjects, data];
+    return [fetchProjects, projects];
 };

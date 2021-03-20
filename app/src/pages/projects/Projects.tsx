@@ -12,8 +12,8 @@ enum Field {
 }
 
 export default function Projects() {
-    const [name, setName] = useInputChange('');
-    const [description, setDescription] = useInputChange('');
+    const [name, setName, resetName] = useInputChange('');
+    const [description, setDescription, resetDescription] = useInputChange('');
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [createProjectHandler, isOk, authError, responseModified, disabled, errorFields] = useCreateProject();
     const [fetchProjects, projects] = useFetchProjects();
@@ -43,6 +43,8 @@ export default function Projects() {
     useEffect(() => {
         if (isOk) {
             Alert('New project created successfully');
+            resetName();
+            resetDescription();
         }
         authError && Alert(authError, AlertType.ERROR);
     }, [responseModified]);
@@ -59,6 +61,7 @@ export default function Projects() {
                             <input type="text"
                                    onChange={setName}
                                    className={showError(Field.name)}
+                                   value={name}
                                    placeholder="Name"/>
                             <div className="invalid-feedback">
                                 Please use at least 2 characters and max 32
@@ -67,6 +70,7 @@ export default function Projects() {
                         <div className="form-group">
                             <small className="form-text text-muted">New project description</small>
                             <input onChange={setDescription} type="text"
+                                   value={description}
                                    className={showError(Field.description)} placeholder="Description"/>
                             <div className="invalid-feedback">
                                 Max characters allowed 512

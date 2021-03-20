@@ -1,12 +1,7 @@
 import React from "react";
+import {Projects} from "../../../types";
+import TableRow from "./TableRow";
 
-type Project = {
-    name: string;
-    description: string;
-}
-type Projects = {
-    projects: Project[]
-};
 export default function ProjectTable({projects}: Projects) {
 
     if (!projects.length) {
@@ -32,26 +27,15 @@ export default function ProjectTable({projects}: Projects) {
             <tbody>
             {
                 projects.map((project, key) =>
-                    <Row key={key} index={key} name={project.name} description={project.description}/>)
+                    <TableRow
+                        key={key}
+                        index={key}
+                        id={project.id}
+                        name={project.name}
+                        description={project.description}
+                    />)
             }
             </tbody>
         </table>
-    );
-}
-
-function Row({name, description, index}: Project & { index: number }) {
-
-    return (
-        <tr>
-            <th scope="row">{index + 1}</th>
-            <td>{name}</td>
-            <td>
-                {description}
-            </td>
-            <td className="text-right">
-                <button className="btn btn-sm btn-outline-primary mr-md-1">edit</button>
-                <button className="btn btn-sm btn-outline-danger">remove</button>
-            </td>
-        </tr>
     );
 }

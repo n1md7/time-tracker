@@ -1,7 +1,7 @@
 import BaseController from './BaseController';
 import ProjectInterface from "./interfaces/ProjectInterface";
 import ProjectModelSequelize from "../../models/sequelize/ProjectModel";
-import {createProjectSchema} from './validators/ProjectRequestValidator';
+import {createProjectSchema, removeProjectSchema} from './validators/ProjectRequestValidator';
 import {HttpCode} from '../../types/errorHandler';
 import {MyContext} from '../../types/koa';
 import {RequestValidationException} from "../../exceptions";
@@ -25,6 +25,18 @@ class ProjectController extends BaseController implements ProjectInterface {
         const model = new ProjectModelSequelize();
 
         ctx.body = await model.getProjectsByUserId(ctx.store.userId);
+    }
+
+    public async removeProjectById(ctx: MyContext): Promise<void> {
+        const id = Number(ctx.params.id);
+        const validation = removeProjectSchema.validate({id});
+        if (validation.error as Joi.ValidationError) {
+            throw new RequestValidationException(validation.error.details);
+        }
+        const model = new ProjectModelSequelize();
+        await model.removeProjectById(validation.value.id, ctx.store.userId);
+
+        ctx.status = HttpCode.accepted;
     }
 }
 

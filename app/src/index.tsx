@@ -6,6 +6,7 @@ import {ToastContainer} from 'react-toastify';
 import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './redux/store';
+import ModalConfirm from "./components/ModalConfirm";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/index.css';
 
@@ -15,6 +16,7 @@ ReactDOM.render(
             <BrowserRouter>
                 <App/>
                 <ToastContainer limit={5} newestOnTop={true}/>
+                <ModalConfirm/>
             </BrowserRouter>
         </Provider>
     </React.StrictMode>,
