@@ -37,8 +37,7 @@ export default function Authentication() {
 
     useEffect(() => {
         if (isOk) {
-            Alert('You have logged in successfully!');
-            history.push('/');
+            return history.push('/');
         }
         authError && Alert(authError, AlertType.ERROR);
     }, [responseModified]);

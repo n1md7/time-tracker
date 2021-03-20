@@ -1,23 +1,13 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import store, {actionUpdate} from "../services/TokenStore";
 import {httpClient} from '../services/HttpClient';
 import {AxiosResponse} from 'axios';
-import {Token} from '../types';
+import {JoyErrorItem, Token} from '../types';
 
 type Auth = {
     email: string;
     password: string;
 };
-
-export interface JoyErrorItem {
-    context: {
-        key: string;
-        label: string;
-        value: string;
-    };
-    path: string[];
-    type: string
-}
 
 export default function useAuthenticate(): [(payload: Auth) => void, boolean, string, number, boolean, string[]] {
     const [isAuth, setIsAuth] = useState<boolean>(false);

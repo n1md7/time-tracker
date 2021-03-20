@@ -4,8 +4,8 @@ import authValidator from "../../../../middlewares/authValidator";
 
 const projectRouter = new Router();
 
-projectRouter.use(['/project', '/projects'], authValidator);
+projectRouter.use(['/projects', '/projects'], authValidator);
 projectRouter.get('/projects', ProjectController.getUserProjects);
-projectRouter.put('/project/new', ProjectController.createNewProject);
+projectRouter.put('/projects/new', ProjectController.createNewProject);
 
 export default projectRouter;

@@ -19,7 +19,7 @@ export default function NavBar({children = []}) {
                     </Nav>
                     <Nav className="mr-lg-5">
                         <NavDropdown title="Dropdown" id="user-nav-dropdown">
-                            <Link className="dropdown-item" to={{pathname: '/profile'}}>Profile</Link>
+                            <Link className="dropdown-item" to={{pathname: '/projects'}}>Profile</Link>
                             <Link className="dropdown-item" to={{pathname: '/settings'}}>Settings</Link>
                             <NavDropdown.Divider/>
                             <Link className="dropdown-item" to={{pathname: '/sign-out'}}>Sign out</Link>

@@ -9,7 +9,7 @@ import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Members from './pages/Members';
 import Teams from './pages/Teams';
-import Projects from './pages/Projects';
+import Projects from './pages/projects/Projects';
 import './styles/App.scss';
 
 function App() {
