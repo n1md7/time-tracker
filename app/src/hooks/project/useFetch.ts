@@ -1,12 +1,12 @@
-import {httpClient} from '../services/HttpClient';
+import {httpClient} from '../../services/HttpClient';
 import {AxiosResponse} from 'axios';
-import Alert, {AlertType} from "../components/Alert";
+import Alert, {AlertType} from "../../components/Alert";
 import {useDispatch, useSelector} from "react-redux";
-import {RootReducer} from "../redux/reducers";
-import {updateProjects} from "../redux/actions";
-import {Project} from "../types";
+import {RootReducer} from "../../redux/reducers";
+import {updateProjects} from "../../redux/actions";
+import {Project} from "../../types";
 
-export default function useFetchProjects(): [() => void, Project[]] {
+export default function useFetch(): [() => void, Project[]] {
     const dispatch = useDispatch();
     const projects = useSelector<RootReducer, Project[]>(({projects}) => projects.all);
 

@@ -48,6 +48,13 @@ export default class TeamModel extends BaseModelSequelize<typeof model> {
         });
     }
 
+    public async getTeamsByUserId(userId: number): Promise<TeamType[]> {
+
+        return await this.model.findAll({
+            where: {createdBy: userId}
+        });
+    }
+
     public async updateProjectIdByTeamId(teamId: number, projectId: number): Promise<void> {
         const [affectedRows] = await this.model.update({projectId}, {
             where: {
@@ -57,6 +64,16 @@ export default class TeamModel extends BaseModelSequelize<typeof model> {
 
         if (affectedRows === 0) {
             throw new MysqlUpdateException(`updateProjectIdByTeamId(${teamId}, where: ${projectId}) didn't modify the record`);
+        }
+    }
+
+    public async removeTeamById(id: number, userId: number): Promise<void> {
+        const destroyed = await this.model.destroy({
+            where: {id, createdBy: userId}
+        });
+
+        if (!destroyed) {
+            throw new MysqlUpdateException(`removeTeamById(${id}, ${userId}) didn't remove the record`);
         }
     }
 

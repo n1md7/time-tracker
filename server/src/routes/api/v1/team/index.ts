@@ -4,7 +4,9 @@ import authValidator from "../../../../middlewares/authValidator";
 
 const teamRouter = new Router();
 
-teamRouter.use(['/team'], authValidator);
+teamRouter.use(['/team', '/teams'], authValidator);
+teamRouter.get('/teams', TeamController.getUserTeams);
+teamRouter.delete('/team/:id', TeamController.removeTeamById);
 teamRouter.put('/team/new', TeamController.createNewTeam);
 
 export default teamRouter;

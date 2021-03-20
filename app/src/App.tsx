@@ -8,7 +8,7 @@ import UserSignOut from './components/UserSignOut';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Members from './pages/Members';
-import Teams from './pages/Teams';
+import Teams from './pages/teams/Teams';
 import Projects from './pages/projects/Projects';
 import './styles/App.scss';
 

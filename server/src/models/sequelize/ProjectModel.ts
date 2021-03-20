@@ -77,7 +77,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
         const destroyed = await this.model.destroy({
             where: {id, createdBy: userId}
         });
-        
+
         if (!destroyed) {
             throw new MysqlUpdateException(`removeProjectById(${id}, ${userId}) didn't remove the record`);
         }

@@ -1,28 +1,33 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import NavBar from "../../components/NavBar";
-import useCreate from "../../hooks/project/useCreate";
-import Alert, {AlertType} from "../../components/Alert";
 import useInputChange from "../../hooks/useChange";
-import ProjectTable from "./components/ProjectTable";
-import useFetch from "../../hooks/project/useFetch";
+import useCreate from "../../hooks/team/useCreate";
+import useFetch from "../../hooks/team/useFetch";
+import Alert, {AlertType} from "../../components/Alert";
+import TeamTable from "../teams/components/TeamTable";
+import {Form} from "react-bootstrap";
+import {useSelector} from "react-redux";
+import {RootReducer} from "../../redux/reducers";
 
 enum Field {
     name = 'name',
-    description = 'description'
+    description = 'description',
+    projectId='projectId'
 }
-
-export default function Projects() {
+export default function Teams(){
     const [name, setName, resetName] = useInputChange('');
     const [description, setDescription, resetDescription] = useInputChange('');
+    const [projectId, setProjectId, resetProjectId] = useInputChange<number, any>(0);
     const [submitted, setSubmitted] = useState<boolean>(false);
-    const [createProjectHandler, isOk, authError, responseModified, disabled, errorFields] = useCreate();
-    const [fetchProjects, projects] = useFetch();
+    const [createTeamHandler, isOk, authError, responseModified, disabled, errorFields] = useCreate();
+    const [fetchTeams, teams] = useFetch();
+    const projects = useSelector(({projects}: RootReducer) => projects.all);
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         event.stopPropagation();
-        await createProjectHandler({name, description});
-        fetchProjects();
+        await createTeamHandler({name, description, projectId});
+        fetchTeams();
         setSubmitted(true);
     };
 
@@ -37,14 +42,15 @@ export default function Projects() {
     };
 
     useEffect(() => {
-        fetchProjects();
+        fetchTeams();
     }, []);
 
     useEffect(() => {
         if (isOk) {
-            Alert('New project created successfully');
+            Alert('New team created successfully');
             resetName();
             resetDescription();
+            resetProjectId();
         }
         authError && Alert(authError, AlertType.ERROR);
     }, [responseModified]);
@@ -54,10 +60,10 @@ export default function Projects() {
             <div className="row">{/**/}</div>
             <div className="row mt-3 justify-content-center no-gutters">
                 <div className="col-md-5">
-                    <h3 className="my-3 text-center">Create project</h3>
+                    <h3 className="my-3 text-center">Create team</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <small className="form-text text-muted">New project name *</small>
+                            <small className="form-text text-muted">New team name *</small>
                             <input type="text"
                                    onChange={setName}
                                    className={showError(Field.name)}
@@ -67,8 +73,27 @@ export default function Projects() {
                                 Please use at least 2 characters and max 32
                             </div>
                         </div>
+                        <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                            <small className="form-text text-muted">Attach project *</small>
+                            <Form.Control
+                                value={projectId}
+                                as="select"
+                                className={showError(Field.projectId)}
+                                onChange={setProjectId}
+                                custom>
+                                <option value="">Select project</option>
+                                {
+                                    projects.map(project => (
+                                        <option key={project.id} value={project.id}>{project.name}</option>
+                                    ))
+                                }
+                            </Form.Control>
+                            <div className="invalid-feedback">
+                                Please select the field
+                            </div>
+                        </Form.Group>
                         <div className="form-group">
-                            <small className="form-text text-muted">New project description</small>
+                            <small className="form-text text-muted">New team description</small>
                             <input onChange={setDescription} type="text"
                                    value={description}
                                    className={showError(Field.description)} placeholder="Description"/>
@@ -87,8 +112,8 @@ export default function Projects() {
             </div>
             <div className="row mt-3 justify-content-center no-gutters">
                 <div className="col-md-5">
-                    <h3 className="my-3 text-center">My projects</h3>
-                    <ProjectTable projects={projects}/>
+                    <h3 className="my-3 text-center">My teams</h3>
+                    <TeamTable teams={teams}/>
                 </div>
             </div>
         </NavBar>

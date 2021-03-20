@@ -45,3 +45,17 @@ export type Projects = {
 export type ProjectType = {
     all: Array<Project>
 }
+
+export type Team = {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export type Teams = {
+    teams: Team[]
+};
+
+export type TeamType = {
+    all: Array<Team>
+}
