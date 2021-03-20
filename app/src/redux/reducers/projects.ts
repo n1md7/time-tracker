@@ -1,7 +1,7 @@
 import {ProjectType} from "../../types";
 
 export enum ProjectAction {
-    update = 'update'
+    update = 'project-update'
 }
 
 type ProjectActionType = {

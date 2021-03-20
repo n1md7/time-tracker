@@ -1,7 +1,7 @@
 import {TeamType} from "../../types";
 
 export enum TeamAction {
-    update = 'update'
+    update = 'team-update'
 }
 
 type TeamActionType = {

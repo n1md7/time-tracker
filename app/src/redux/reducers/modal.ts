@@ -1,7 +1,7 @@
 import {ButtonVariant, ConfirmModalType} from "../../types";
 
 export enum ModalAction {
-    update = 'update'
+    update = 'modal-update'
 }
 
 type ModalActionType = {

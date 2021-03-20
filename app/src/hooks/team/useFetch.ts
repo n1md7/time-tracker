@@ -8,16 +8,16 @@ import {Team} from "../../types";
 
 export default function useFetch(): [() => void, Team[]] {
     const dispatch = useDispatch();
-    const projects = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
+    const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
 
     const fetchTeams = () => {
         httpClient
             .get<AxiosResponse, AxiosResponse<Team[] | string>>('v1/teams')
             .then((response) => {
                 if (response.status === 200) {
-                    const projects = response.data as Team[];
-                    projects.sort().reverse();
-                    dispatch(updateTeams({all: projects}));
+                    const teams = response.data as Team[];
+                    teams.sort().reverse();
+                    dispatch(updateTeams({all: teams}));
                 } else {
                     Alert(response.data as string, AlertType.ERROR);
                 }
@@ -27,5 +27,5 @@ export default function useFetch(): [() => void, Team[]] {
             });
     }
 
-    return [fetchTeams, projects];
+    return [fetchTeams, teams];
 };

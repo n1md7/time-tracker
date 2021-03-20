@@ -3,6 +3,7 @@ import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
 import useCreate from "../../hooks/team/useCreate";
 import useFetch from "../../hooks/team/useFetch";
+import useFetchProjects from "../../hooks/project/useFetch";
 import Alert, {AlertType} from "../../components/Alert";
 import TeamTable from "../teams/components/TeamTable";
 import {Form} from "react-bootstrap";
@@ -12,16 +13,17 @@ import {RootReducer} from "../../redux/reducers";
 enum Field {
     name = 'name',
     description = 'description',
-    projectId='projectId'
+    projectId = 'projectId'
 }
-export default function Teams(){
+
+export default function Teams() {
     const [name, setName, resetName] = useInputChange('');
     const [description, setDescription, resetDescription] = useInputChange('');
     const [projectId, setProjectId, resetProjectId] = useInputChange<number, any>(0);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [createTeamHandler, isOk, authError, responseModified, disabled, errorFields] = useCreate();
     const [fetchTeams, teams] = useFetch();
-    const projects = useSelector(({projects}: RootReducer) => projects.all);
+    const [fetchProjects, projects] = useFetchProjects();
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -43,6 +45,7 @@ export default function Teams(){
 
     useEffect(() => {
         fetchTeams();
+        fetchProjects();
     }, []);
 
     useEffect(() => {
@@ -89,7 +92,9 @@ export default function Teams(){
                                 }
                             </Form.Control>
                             <div className="invalid-feedback">
-                                Please select the field
+                                {
+                                    projects.length ? 'Please select the field' : 'Create a project first'
+                                }
                             </div>
                         </Form.Group>
                         <div className="form-group">
