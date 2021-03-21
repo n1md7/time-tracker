@@ -7,7 +7,8 @@
     "url": "git@github.com:bichiko/time-tracker.git"
   },
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
+    "dev-win": "set NODE_ENV=development && ts-node-dev src/index.ts",
+    "dev": "export NODE_ENV=development && ts-node-dev src/index.ts",
     "prod:build": "rimraf dist && tsc",
     "prod": "export NODE_ENV=production && node dist/index.js",
     "test": "jest --coverage --forceExit",
@@ -27,7 +28,8 @@
     "mysql:seeds:undo:all": "npx sequelize db:seed:undo:all",
     "mysql:sequelize": "npx sequelize",
     "mysql:info": "npx sequelize --help && echo '\nPlease visit https://sequelize.org/master/manual/migrations.html'",
-    "seeder": "ts-node-dev src/factory/seeders/index.ts",
+    "seeder": "export NODE_ENV=development && ts-node-dev src/factory/seeders/index.ts",
+    "seeder-win": "set NODE_ENV=development && ts-node-dev src/factory/seeders/index.ts",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },

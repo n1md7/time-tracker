@@ -112,4 +112,13 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
             throw new MysqlUpdateException(`updateStatusById(${id}, where: ${status}) didn't modify the record`);
         }
     }
+
+    public async userExist(email: string): Promise<boolean|UserType> {
+        const resultRow = await this.model.findOne({where: {email}});
+        if(!resultRow){
+            return false;
+        }
+
+        return resultRow.dataValues as UserType;
+    }
 }

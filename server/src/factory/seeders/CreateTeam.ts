@@ -8,7 +8,6 @@ export default async function createTeam(projectId: number, userId: number): Pro
         projectId
     });
     const projectModel = new TeamModel();
-    // TODO check whether or not such record already there and return it
 
     return await projectModel.addNewTeam(generatedProject, userId);
 }

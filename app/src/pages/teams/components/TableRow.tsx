@@ -11,7 +11,7 @@ export default function TableRow({name, description, index, id}: Team & { index:
   const [removeRequest, removed, removeError, responseModified, disabled] = useRemove();
   const [fetchTeams] = useFetchTeam();
 
-  const removeHandler = () => {
+  const removeHandler = () => () => {
     dispatch(updateModal({
       header: `Are you sure?`,
       body: `"${name}" is about to remove`,

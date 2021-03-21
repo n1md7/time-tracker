@@ -30,7 +30,10 @@ export default function ModalConfirm(props: ModalProps) {
           onClick={modal.confirmHandler}
           variant={modal.confirmButtonVariant}>{
           modal.confirmDisabled ? (
-            <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+            <>
+              <span>Confirming...</span>
+              <Spinner className="align-self-center ml-1" animation="border" variant="secondary" size="sm"/>
+            </>
           ) : modal.confirmText
         }</Button>
       </Modal.Footer>

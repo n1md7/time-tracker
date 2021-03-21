@@ -13,6 +13,8 @@ import SocketIO, {Server as SocketIoServer} from "socket.io"
 import SocketModule from "../socket";
 import serveIndexHTML from '../middlewares/serveIndexHTML';
 import handleApiNotFound from '../middlewares/handleApiNotFound';
+import delayResponse from "../middlewares/delayResponse";
+import '../helpers/prototypes';
 
 export default class Server {
     koa: Koa;
@@ -27,7 +29,7 @@ export default class Server {
         // Makes publicly accessible React build folder
         this.staticFolderPath = path.join(__dirname, config.server.staticFolderPath);
         // Allow any cross-domain requests when not Production environment
-        if (process.env.NODE_ENV === Env.Prod) {
+        if (process.env.NODE_ENV.equalTo(Env.Prod)) {
             this.config.origin = process.env.ORIGIN;
         }
     }
@@ -40,6 +42,10 @@ export default class Server {
             this.staticFolderPath,
             this.config.server.indexFile,
         );
+        if (process.env.NODE_ENV?.equalTo(Env.Dev)) {
+            // On development mode set custom delay in response for testing
+            this.koa.use(delayResponse(300));
+        }
         this.koa.use(handleErrors);
         this.koa.use(cors({
             origin: this.config.origin,
