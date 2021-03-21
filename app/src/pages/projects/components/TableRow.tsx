@@ -1,15 +1,15 @@
 import React, {useEffect} from "react";
-import {Project} from "../../../types";
+import {ConfirmModalType, Project} from "../../../types";
 import {useDispatch} from "react-redux";
 import {updateModal} from "../../../redux/actions";
 import useRemove from "../../../hooks/modal/useRemove";
 import Alert, {AlertType} from "../../../components/Alert";
-import useFetch from "../../../hooks/project/useFetch";
+import useFetchProject from "../../../hooks/project/useFetchProject";
 
 export default function TableRow({name, description, index, id}: Project & { index: number }) {
   const dispatch = useDispatch();
   const [removeRequest, removed, removeError, responseModified, disabled] = useRemove();
-  const [fetchProjects] = useFetch();
+  const [fetchProjects] = useFetchProject();
 
   const removeHandler = () => {
     dispatch(updateModal({
@@ -18,7 +18,7 @@ export default function TableRow({name, description, index, id}: Project & { ind
       show: true,
       closeHandler: () => dispatch(updateModal({show: false})),
       confirmHandler: async () => {
-        dispatch(updateModal({disable: disabled}));
+        dispatch(updateModal({confirmDisabled: disabled} as ConfirmModalType));
         await removeRequest(`v1/project/${id}`);
       }
     }));
@@ -28,7 +28,7 @@ export default function TableRow({name, description, index, id}: Project & { ind
     if (removed) {
       Alert(`Project "${name}" has been removed`, AlertType.SUCCESS);
       fetchProjects();
-      dispatch(updateModal({show: false}));
+      dispatch(updateModal({show: false} as ConfirmModalType));
     }
     removeError && Alert(removeError, AlertType.ERROR);
   }, [responseModified]);

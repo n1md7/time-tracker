@@ -3,23 +3,22 @@ import {httpClient} from '../../services/HttpClient';
 import {AxiosResponse} from 'axios';
 import {JoyErrorItem} from '../../types';
 
-type Team = {
+type Project = {
   name: string;
   description: string;
-  projectId: number;
 };
 
-export default function useCreate(): [(payload: Team) => void, boolean, string, number, boolean, string[]] {
+export default function useCreateProject(): [(payload: Project) => void, boolean, string, number, boolean, string[]] {
   const [isOk, setIsOk] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [errorFields, setErrorFields] = useState<Array<string>>([]);
   const [counter, setCounter] = useState<number>(0);
   const [submitted, setSubmitted] = useState<boolean>(false);
 
-  const createTeamHandler = async (payload: Team) => {
+  const createProjectHandler = async (payload: Project) => {
     setSubmitted(true);
     await httpClient
-      .put<AxiosResponse, AxiosResponse<string | JoyErrorItem[]>>('v1/team/new', payload)
+      .put<AxiosResponse, AxiosResponse<string | JoyErrorItem[]>>('v1/projects/new', payload)
       .then((response) => {
         if (response.status === 201) {
           setIsOk(true);
@@ -48,5 +47,5 @@ export default function useCreate(): [(payload: Team) => void, boolean, string, 
       });
   }
 
-  return [createTeamHandler, isOk, error, counter, submitted, errorFields];
+  return [createProjectHandler, isOk, error, counter, submitted, errorFields];
 };

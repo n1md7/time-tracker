@@ -5,10 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootReducer} from "../../redux/reducers";
 import {updateTeams} from "../../redux/actions";
 import {Team} from "../../types";
+import {useState} from 'react';
 
-export default function useFetch(): [() => void, Team[]] {
+export default function useFetchTeam(): [() => void, Team[], boolean] {
   const dispatch = useDispatch();
   const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
+  const [fetching, setFetching] = useState<boolean>(true);
 
   const fetchTeams = () => {
     httpClient
@@ -22,8 +24,10 @@ export default function useFetch(): [() => void, Team[]] {
       })
       .catch(({message}) => {
         Alert(message, AlertType.ERROR);
-      });
+      }).finally(() => {
+      setFetching(false);
+    });
   }
 
-  return [fetchTeams, teams];
+  return [fetchTeams, teams, fetching];
 };

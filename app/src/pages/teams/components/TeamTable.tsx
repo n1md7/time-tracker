@@ -1,17 +1,19 @@
 import React from "react";
-import {Teams} from "../../../types";
+import {Team} from "../../../types";
 import TableRow from "./TableRow";
+import InlineLoading from '../../../components/InlineLoading';
+import NoData from '../../../components/NoData';
 
-export default function TeamTable({teams}: Teams) {
-
+type Teams = {
+  teams: Team[],
+  fetching: boolean
+};
+export default function TeamTable({teams, fetching}: Teams) {
+  if (fetching) {
+    return <InlineLoading/>;
+  }
   if (!teams.length) {
-    return (
-      <div className="row mt-3 justify-content-center no-gutters">
-        <div className="col-12">
-          <h6 className="my-3 text-center text-muted">You don't have any teams created!</h6>
-        </div>
-      </div>
-    );
+    return <NoData text={'You don\'t have any teams created!'}/>;
   }
 
   return (

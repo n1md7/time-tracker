@@ -1,9 +1,9 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
-import useCreate from "../../hooks/team/useCreate";
-import useFetch from "../../hooks/team/useFetch";
-import useFetchProjects from "../../hooks/project/useFetch";
+import useCreateTeam from "../../hooks/team/useCreateTeam";
+import useFetchTeam from "../../hooks/team/useFetchTeam";
+import useFetchProjects from "../../hooks/project/useFetchProject";
 import Alert, {AlertType} from "../../components/Alert";
 import TeamTable from "../teams/components/TeamTable";
 import {Form, Spinner} from "react-bootstrap";
@@ -20,9 +20,9 @@ export default function Teams() {
   const [description, setDescription, resetDescription] = useInputChange('');
   const [projectId, setProjectId, resetProjectId] = useInputChange<number, any>(0);
   const [submitted, setSubmitted] = useState<boolean>(false);
-  const [createTeamHandler, isOk, authError, responseModified, disabled, errorFields] = useCreate();
-  const [fetchTeams, teams] = useFetch();
-  const [fetchProjects, projects] = useFetchProjects();
+  const [createTeamHandler, isOk, authError, responseModified, disabled, errorFields] = useCreateTeam();
+  const [fetchTeams, teams, fetchingTeams] = useFetchTeam();
+  const [fetchProjects, projects, fetchingProjects] = useFetchProjects();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,11 +66,12 @@ export default function Teams() {
           <form onSubmit={onSubmit}>
             <div className="form-group">
               <small className="form-text text-muted">New team name <Required/></small>
-              <input type="text"
-                     onChange={setName}
-                     className={showError(Field.name)}
-                     value={name}
-                     placeholder="Name"/>
+              <input
+                type="text"
+                onChange={setName}
+                className={showError(Field.name)}
+                value={name}
+                placeholder="Name"/>
               <div className="invalid-feedback">
                 Please use at least 2 characters and max 32
               </div>
@@ -78,12 +79,13 @@ export default function Teams() {
             <Form.Group controlId="exampleForm.SelectCustomSizeSm">
               <small className="form-text text-muted">Attach project <Required/></small>
               <Form.Control
+                disabled={fetchingProjects}
                 value={projectId}
                 as="select"
                 className={showError(Field.projectId)}
                 onChange={setProjectId}
                 custom>
-                <option value="">Select project</option>
+                <option value="">{fetchingProjects ? 'Loading...' : 'Select project'}</option>
                 {
                   projects.map(project => (
                     <option key={project.id} value={project.id}>{project.name}</option>
@@ -121,7 +123,7 @@ export default function Teams() {
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-md-5">
           <h3 className="my-3 text-center">My teams</h3>
-          <TeamTable teams={teams}/>
+          <TeamTable teams={teams} fetching={fetchingTeams}/>
         </div>
       </div>
     </NavBar>

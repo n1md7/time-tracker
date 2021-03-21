@@ -2,6 +2,7 @@ import {Button, Modal, ModalProps} from "react-bootstrap";
 import React from "react";
 import {useSelector} from "react-redux";
 import {RootReducer} from "../redux/reducers";
+import {Spinner} from 'react-bootstrap';
 
 export default function ModalConfirm(props: ModalProps) {
   const modal = useSelector((store: RootReducer) => store.modal);
@@ -27,7 +28,11 @@ export default function ModalConfirm(props: ModalProps) {
         <Button
           disabled={modal.confirmDisabled}
           onClick={modal.confirmHandler}
-          variant={modal.confirmButtonVariant}>{modal.confirmText}</Button>
+          variant={modal.confirmButtonVariant}>{
+          modal.confirmDisabled ? (
+            <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+          ) : modal.confirmText
+        }</Button>
       </Modal.Footer>
     </Modal>
   );

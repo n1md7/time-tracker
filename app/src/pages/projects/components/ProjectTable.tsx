@@ -1,17 +1,20 @@
 import React from "react";
-import {Projects} from "../../../types";
+import {Project} from "../../../types";
 import TableRow from "./TableRow";
+import NoData from '../../../components/NoData';
+import InlineLoading from '../../../components/InlineLoading';
 
-export default function ProjectTable({projects}: Projects) {
+type Projects = {
+  projects: Project[],
+  fetching: boolean
+};
 
+export default function ProjectTable({projects, fetching}: Projects) {
+  if (fetching) {
+    return <InlineLoading/>;
+  }
   if (!projects.length) {
-    return (
-      <div className="row mt-3 justify-content-center no-gutters">
-        <div className="col-12">
-          <h6 className="my-3 text-center text-muted">You don't have any projects created!</h6>
-        </div>
-      </div>
-    );
+    return <NoData text={'You don\'t have any projects created!'}/>;
   }
 
   return (

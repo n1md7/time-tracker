@@ -5,10 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootReducer} from "../../redux/reducers";
 import {updateProjects} from "../../redux/actions";
 import {Project} from "../../types";
+import {useState} from 'react';
 
-export default function useFetch(): [() => void, Project[]] {
+export default function useFetchProject(): [() => void, Project[], boolean] {
   const dispatch = useDispatch();
   const projects = useSelector<RootReducer, Project[]>(({projects}) => projects.all);
+  const [fetching, setFetching] = useState<boolean>(true);
 
   const fetchProjects = () => {
     httpClient
@@ -22,8 +24,10 @@ export default function useFetch(): [() => void, Project[]] {
       })
       .catch(({message}) => {
         Alert(message, AlertType.ERROR);
-      });
+      }).finally(() => {
+      setFetching(false);
+    });
   }
 
-  return [fetchProjects, projects];
+  return [fetchProjects, projects, fetching];
 };
