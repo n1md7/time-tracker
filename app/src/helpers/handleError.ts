@@ -14,7 +14,7 @@ export default (error: AxiosError): string => {
     // Something happened in setting up the request that triggered an Error
     message = error.message;
   }
-  Alert(message, AlertType.ERROR,10);
+  Alert(message, AlertType.ERROR, 10);
 
   return message;
 };

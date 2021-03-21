@@ -25,8 +25,9 @@ class TeamController extends BaseController implements TeamInterface {
     public async getUserTeams(ctx: MyContext): Promise<void> {
 
         const model = new TeamModelSequelize();
+        const teams = await model.getTeamsByUserId(ctx.store.userId);
 
-        ctx.body = await model.getTeamsByUserId(ctx.store.userId);
+        ctx.body = teams.sort().reverse();
     }
 
 

@@ -23,8 +23,8 @@ class ProjectController extends BaseController implements ProjectInterface {
 
     public async getUserProjects(ctx: MyContext): Promise<void> {
         const model = new ProjectModelSequelize();
-
-        ctx.body = await model.getProjectsByUserId(ctx.store.userId);
+        const projects = await model.getProjectsByUserId(ctx.store.userId);
+        ctx.body = projects.sort().reverse();
     }
 
     public async removeProjectById(ctx: MyContext): Promise<void> {

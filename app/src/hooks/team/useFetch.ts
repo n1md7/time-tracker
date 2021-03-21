@@ -7,25 +7,23 @@ import {updateTeams} from "../../redux/actions";
 import {Team} from "../../types";
 
 export default function useFetch(): [() => void, Team[]] {
-    const dispatch = useDispatch();
-    const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
+  const dispatch = useDispatch();
+  const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
 
-    const fetchTeams = () => {
-        httpClient
-            .get<AxiosResponse, AxiosResponse<Team[] | string>>('v1/teams')
-            .then((response) => {
-                if (response.status === 200) {
-                    const teams = response.data as Team[];
-                    teams.sort().reverse();
-                    dispatch(updateTeams({all: teams}));
-                } else {
-                    Alert(response.data as string, AlertType.ERROR);
-                }
-            })
-            .catch(({message}) => {
-                Alert(message, AlertType.ERROR);
-            });
-    }
+  const fetchTeams = () => {
+    httpClient
+      .get<AxiosResponse, AxiosResponse<Team[] | string>>('v1/teams')
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch(updateTeams({all: response.data as Team[]}));
+        } else {
+          Alert(response.data as string, AlertType.ERROR);
+        }
+      })
+      .catch(({message}) => {
+        Alert(message, AlertType.ERROR);
+      });
+  }
 
-    return [fetchTeams, teams];
+  return [fetchTeams, teams];
 };

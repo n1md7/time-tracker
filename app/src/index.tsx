@@ -11,16 +11,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/index.css';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App/>
-                <ToastContainer limit={5} newestOnTop={true}/>
-                <ModalConfirm/>
-            </BrowserRouter>
-        </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App/>
+        <ToastContainer limit={5} newestOnTop={true}/>
+        <ModalConfirm/>
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

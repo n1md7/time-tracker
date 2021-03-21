@@ -4,19 +4,19 @@ import useTokenUpdate from "../hooks/useTokenUpdate";
 import Loading from "./Loading";
 
 const ProtectedRoute = (props) => {
-    const [isAuth, isLoading, errorMessage] = useTokenUpdate();
+  const [isAuth, isLoading, errorMessage] = useTokenUpdate();
 
-    if (isLoading) {
-        return <Loading/>;
-    }
+  if (isLoading) {
+    return <Loading/>;
+  }
 
-    return !isAuth && !isLoading ?
-        <Redirect to={{
-            pathname: '/sign-in',
-            state: {
-                from: props.location
-            }
-        }}/> : <Route {...props}/>;
+  return !isAuth && !isLoading ?
+    <Redirect to={{
+      pathname: '/sign-in',
+      state: {
+        from: props.location
+      }
+    }}/> : <Route {...props}/>;
 };
 
 export default ProtectedRoute;

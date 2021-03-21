@@ -3,14 +3,14 @@ import {useHistory} from "react-router";
 import {Token} from "../types";
 
 export default function UserSignOut() {
-    const history = useHistory();
+  const history = useHistory();
 
-    useEffect(() => {
-        localStorage.removeItem(Token.name);
-        history.push('/sign-in');
-    }, []);
+  useEffect(() => {
+    localStorage.removeItem(Token.name);
+    history.push('/sign-in');
+  }, []);
 
-    return (
-        <div>Logging out...</div>
-    );
+  return (
+    <div>Logging out...</div>
+  );
 };
