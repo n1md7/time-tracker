@@ -5,6 +5,7 @@ import {useHistory} from "react-router";
 import Alert, {AlertType} from "../components/Alert";
 import {Link} from "react-router-dom";
 import logo from "../img/logo.png";
+import {Spinner} from "react-bootstrap";
 
 enum Field {
     email = 'email',
@@ -73,7 +74,11 @@ export default function Authentication() {
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
                                     className="btn btn-primary w-100">
-                                Authenticate
+                                {
+                                    disabled? (
+                                        <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+                                    ): 'Authenticate'
+                                }
                             </button>
                         </div>
                         <div className="form-group text-center">

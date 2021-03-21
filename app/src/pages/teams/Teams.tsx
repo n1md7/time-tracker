@@ -6,7 +6,7 @@ import useFetch from "../../hooks/team/useFetch";
 import useFetchProjects from "../../hooks/project/useFetch";
 import Alert, {AlertType} from "../../components/Alert";
 import TeamTable from "../teams/components/TeamTable";
-import {Form} from "react-bootstrap";
+import {Form, Spinner} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {RootReducer} from "../../redux/reducers";
 
@@ -109,7 +109,11 @@ export default function Teams() {
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
                                     className="btn btn-primary w-100">
-                                Create
+                                {
+                                    disabled? (
+                                        <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+                                    ): 'Create'
+                                }
                             </button>
                         </div>
                     </form>

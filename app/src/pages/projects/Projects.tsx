@@ -5,6 +5,7 @@ import Alert, {AlertType} from "../../components/Alert";
 import useInputChange from "../../hooks/useChange";
 import ProjectTable from "./components/ProjectTable";
 import useFetch from "../../hooks/project/useFetch";
+import {Spinner} from "react-bootstrap";
 
 enum Field {
     name = 'name',
@@ -79,7 +80,11 @@ export default function Projects() {
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
                                     className="btn btn-primary w-100">
-                                Create
+                                {
+                                    disabled? (
+                                        <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+                                    ): 'Create'
+                                }
                             </button>
                         </div>
                     </form>

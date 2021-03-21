@@ -5,6 +5,7 @@ import Alert, {AlertType} from "../components/Alert";
 import {Link} from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import logo from "../img/logo.png";
+import {Spinner} from "react-bootstrap";
 
 enum Field {
     email = 'email',
@@ -130,7 +131,11 @@ export default function Registration() {
                         <div className="form-group text-center">
                             <button disabled={disabled} type="submit"
                                     className="btn btn-outline-secondary w-100">
-                                Sign up
+                                {
+                                    disabled? (
+                                        <Spinner className="align-self-center" animation="border" variant="secondary" size="sm"/>
+                                    ): 'Sign up'
+                                }
                             </button>
                         </div>
                         <div className="form-group text-center">

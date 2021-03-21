@@ -11,7 +11,7 @@ export default function NavBar({children = []}) {
                 <Link className="my-nav-link" to={{pathname: '/'}}>Time-tracker</Link>
             </span>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                <Navbar.Collapse id="basic-navbar-nav">
+                <Navbar.Collapse>
                     <Nav className="mr-auto">
                         <Link className="nav-link" to={{pathname: '/projects'}}>Projects</Link>
                         <Link className="nav-link" to={{pathname: '/teams'}}>Teams</Link>
