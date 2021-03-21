@@ -20,6 +20,8 @@ function App() {
 
   useEffect(() => {
     // Reset state on page refresh
+    // This is problematic only in Chrome
+    // And caused by Redux-dev tool extension on Chrome
     dispatch(updateModal({show: false} as ConfirmModalType));
   }, []);
 
