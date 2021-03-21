@@ -7,8 +7,7 @@ import useFetchProjects from "../../hooks/project/useFetch";
 import Alert, {AlertType} from "../../components/Alert";
 import TeamTable from "../teams/components/TeamTable";
 import {Form, Spinner} from "react-bootstrap";
-import {useSelector} from "react-redux";
-import {RootReducer} from "../../redux/reducers";
+import Required from "../../components/Required";
 
 enum Field {
     name = 'name',
@@ -66,7 +65,7 @@ export default function Teams() {
                     <h3 className="my-3 text-center">Create team</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <small className="form-text text-muted">New team name *</small>
+                            <small className="form-text text-muted">New team name <Required/></small>
                             <input type="text"
                                    onChange={setName}
                                    className={showError(Field.name)}
@@ -77,7 +76,7 @@ export default function Teams() {
                             </div>
                         </div>
                         <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-                            <small className="form-text text-muted">Attach project *</small>
+                            <small className="form-text text-muted">Attach project <Required/></small>
                             <Form.Control
                                 value={projectId}
                                 as="select"

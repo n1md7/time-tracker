@@ -6,6 +6,7 @@ import useInputChange from "../../hooks/useChange";
 import ProjectTable from "./components/ProjectTable";
 import useFetch from "../../hooks/project/useFetch";
 import {Spinner} from "react-bootstrap";
+import Required from "../../components/Required";
 
 enum Field {
     name = 'name',
@@ -58,7 +59,7 @@ export default function Projects() {
                     <h3 className="my-3 text-center">Create project</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <small className="form-text text-muted">New project name *</small>
+                            <small className="form-text text-muted">New project name <Required/></small>
                             <input type="text"
                                    onChange={setName}
                                    className={showError(Field.name)}

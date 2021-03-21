@@ -17,11 +17,13 @@ module.exports = {
             },
             firstName: {
                 type: Sequelize.STRING(32),
-                allowNull: false
+                allowNull: true,
+                defaultValue: null
             },
             lastName: {
                 type: Sequelize.STRING(32),
-                allowNull: false
+                allowNull: true,
+                defaultValue: null
             },
             password: {
                 type: Sequelize.STRING(512),
@@ -34,11 +36,13 @@ module.exports = {
             },
             personalNumber: {
                 type: Sequelize.STRING(11),
-                allowNull: false
+                allowNull: true,
+                defaultValue: null
             },
             jobPosition: {
                 type: Sequelize.STRING(128),
-                allowNull: false
+                allowNull: true,
+                defaultValue: null
             },
             role: {
                 type: Sequelize.INTEGER(2),

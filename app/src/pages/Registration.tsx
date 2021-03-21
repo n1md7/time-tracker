@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import logo from "../img/logo.png";
 import {Spinner} from "react-bootstrap";
+import Required from "../components/Required";
 
 enum Field {
     email = 'email',
@@ -73,7 +74,7 @@ export default function Registration() {
                     <h3 className="my-3 text-center">User Registration</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <small className="form-text text-muted">Enter your E-mail</small>
+                            <small className="form-text text-muted">Enter your E-mail <Required/></small>
                             <input onChange={setEmail}
                                    className={showError(Field.email)} placeholder="E-mail"/>
                             <div className="invalid-feedback">
@@ -113,7 +114,7 @@ export default function Registration() {
                             </div>
                         </div>
                         <div className="form-group">
-                            <small className="form-text text-muted">Enter your password</small>
+                            <small className="form-text text-muted">Enter your password <Required/></small>
                             <input onChange={setPassword} type="password"
                                    className={showError(Field.password)} placeholder="Password"/>
                             <div className="invalid-feedback">
@@ -121,7 +122,7 @@ export default function Registration() {
                             </div>
                         </div>
                         <div className="form-group">
-                            <small className="form-text text-muted">Confirm your password</small>
+                            <small className="form-text text-muted">Confirm your password <Required/></small>
                             <input onChange={setConfirmPassword} type="password"
                                    className={showError(Field.confirmPassword)} placeholder="Confirm password"/>
                             <div className="invalid-feedback">
