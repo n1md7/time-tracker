@@ -28,11 +28,3 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-// This is necessary for pre-configured modal closeHandler make work on page refresh
-// When modal is open show:true and page refreshes it keeps the state and modal shows up
-// However close handlers are not configured that time so without pre-configuration
-// it is not possible to close it
-// So by exporting this store in reducer its possible to trigger show:false
-export {
-  store
-}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Authentication from './pages/Authentication';
@@ -10,9 +10,18 @@ import Profile from './pages/Profile';
 import Members from './pages/Members';
 import Teams from './pages/teams/Teams';
 import Projects from './pages/projects/Projects';
+import {ConfirmModalType} from './types';
+import {updateModal} from './redux/actions';
+import {useDispatch} from 'react-redux';
 import './styles/App.scss';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Reset state on page refresh
+    dispatch(updateModal({show: false} as ConfirmModalType));
+  }, []);
 
   return (
     <Switch>

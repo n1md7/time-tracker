@@ -1,9 +1,9 @@
 export default {
     server: {
         apiContextPath: '/api',
-        hostname: '0.0.0.0',
+        hostname: '127.0.0.1',
         port: 8080,
-        staticFolderPath: '../../../game/build',
+        staticFolderPath: '../../../app/build',
         indexFile: '/index.html',
     },
     origin: 'http://localhost:3000',
