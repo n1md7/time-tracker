@@ -5,6 +5,7 @@ import {updateModal} from "../../../redux/actions";
 import useRemove from "../../../hooks/modal/useRemove";
 import Alert, {AlertType} from "../../../components/Alert";
 import useFetchProject from "../../../hooks/project/useFetchProject";
+import {VscChromeClose} from 'react-icons/vsc';
 
 export default function TableRow({name, description, index, id}: Project & { index: number }) {
   const dispatch = useDispatch();
@@ -18,8 +19,9 @@ export default function TableRow({name, description, index, id}: Project & { ind
       show: true,
       closeHandler: () => dispatch(updateModal({show: false})),
       confirmHandler: async () => {
-        dispatch(updateModal({confirmDisabled: disabled} as ConfirmModalType));
+        dispatch(updateModal({confirmDisabled: true} as ConfirmModalType));
         await removeRequest(`v1/project/${id}`);
+        dispatch(updateModal({confirmDisabled: false} as ConfirmModalType));
       }
     }));
   };
@@ -42,8 +44,10 @@ export default function TableRow({name, description, index, id}: Project & { ind
         {description}
       </td>
       <td className="text-right">
-        <button className="btn btn-sm btn-outline-primary mr-md-1">edit</button>
-        <button className="btn btn-sm btn-outline-danger" onClick={removeHandler}>remove</button>
+        {/*<button className="btn btn-sm btn-outline-primary mr-md-1">Edit</button>*/}
+        <button className="btn btn-sm text-danger" title={'Remove'} onClick={removeHandler}>
+          <VscChromeClose/>
+        </button>
       </td>
     </tr>
   );

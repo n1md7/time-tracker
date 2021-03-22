@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 import store from './redux/store';
 import ModalConfirm from "./components/ModalConfirm";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/index.css';
 
 ReactDOM.render(

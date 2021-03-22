@@ -44,7 +44,7 @@ export default class Server {
         );
         if (process.env.NODE_ENV?.equalTo(Env.Dev)) {
             // On development mode set custom delay in response for testing
-            this.koa.use(delayResponse(300));
+            this.koa.use(delayResponse(350));
         }
         this.koa.use(handleErrors);
         this.koa.use(cors({

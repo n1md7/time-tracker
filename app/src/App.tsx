@@ -13,6 +13,7 @@ import Projects from './pages/projects/Projects';
 import {ConfirmModalType} from './types';
 import {updateModal} from './redux/actions';
 import {useDispatch} from 'react-redux';
+import Notifications from './pages/Notifications';
 import './styles/App.scss';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   useEffect(() => {
     // Reset state on page refresh
     // This is problematic only in Chrome
-    // And caused by Redux-dev tool extension on Chrome
+    // And caused by Redux-dev tool extension
     dispatch(updateModal({show: false} as ConfirmModalType));
   }, []);
 
@@ -36,6 +37,7 @@ function App() {
       <ProtectedRoute path="/members" component={Members}/>
       <ProtectedRoute path="/teams" component={Teams}/>
       <ProtectedRoute path="/projects" component={Projects}/>
+      <ProtectedRoute path="/notifications" component={Notifications}/>
       <Redirect to="/"/>
     </Switch>
   );
