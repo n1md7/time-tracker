@@ -37,6 +37,7 @@ export enum ExceptionType {
     passwordsNotMatchException = 'PasswordsNotMatchException',
     teamNotFoundException = 'TeamNotFoundException',
     invitationEmailNotFoundException = 'InvitationEmailNotFoundException',
+    emailAlreadyTakenException = 'EmailAlreadyTakenException',
 }
 
 export enum MongoErrorCode {

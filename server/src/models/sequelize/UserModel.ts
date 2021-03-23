@@ -50,16 +50,6 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
     }
 
     public async addNewUser(requestParam: RequestUserType): Promise<UserType> {
-        const resultRow = await this.model.findOne({
-            where: {
-                email: requestParam.email
-            }
-        });
-
-        if (resultRow) {
-            throw new Error(`such email already taken`);
-        }
-
         const passwordHash = await StringUtils.hashPassword(requestParam.password);
         return await this.model.create({
             firstName: requestParam.firstName,

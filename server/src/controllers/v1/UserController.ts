@@ -1,13 +1,14 @@
 import BaseController from './BaseController';
 import {Context} from 'koa';
 import UserInterface from "./interfaces/UserInterface";
-import UserModelSequelize, {UserType} from "../../models/sequelize/UserModel";
+import UserModel, {UserStatus, UserType} from "../../models/sequelize/UserModel";
 import {authUserSchema, createUserSchema} from './validators/UserRequestValidator';
 import {HttpCode} from '../../types/errorHandler';
 import JsonWebToken from 'jsonwebtoken';
 import {MyContext} from '../../types/koa';
 import Joi from 'joi';
-import {PasswordsNotMatchException, RequestValidationException} from "../../exceptions";
+import {EmailAlreadyTakenException, PasswordsNotMatchException, RequestValidationException} from "../../exceptions";
+import InvitationModel, {InvitationStatus} from "../../models/sequelize/InvitationModel";
 
 export type JwtPayload = {
     email: string;
@@ -51,8 +52,18 @@ class UserController extends BaseController implements UserInterface {
         if (validation.value.password !== validation.value.confirmPassword) {
             throw new PasswordsNotMatchException("Passwords didn't match!");
         }
-        const model = new UserModelSequelize();
-        await model.addNewUser(validation.value);
+        const {email} = validation.value;
+        const userModel = new UserModel();
+        const inviteModel = new InvitationModel();
+        if (await userModel.userExist(email)) {
+            throw new EmailAlreadyTakenException(`E-mail: "${email}" already taken`);
+        }
+        const user = await userModel.addNewUser(validation.value);
+        if (await inviteModel.getInvitationByEmail(email)) {
+            // Activate user immediately since invitation went through the email so its valid
+            await userModel.updateStatusById(user.id, UserStatus.active);
+            await inviteModel.updateStatusByEmail(email, InvitationStatus.pendingApproval);
+        }
 
         ctx.status = HttpCode.created;
     }
@@ -63,7 +74,7 @@ class UserController extends BaseController implements UserInterface {
         if (validation.error as Joi.ValidationError) {
             throw new RequestValidationException(validation.error.details);
         }
-        const model = new UserModelSequelize();
+        const model = new UserModel();
         const user = await model.credentialsAreValid(validation.value) as UserType;
         if (!user) {
             return ctx.status = HttpCode.unauthorized;

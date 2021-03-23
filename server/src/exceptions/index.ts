@@ -35,3 +35,10 @@ export class InvitationEmailNotFoundException extends Error {
         this.name = ExceptionType.invitationEmailNotFoundException;
     }
 }
+
+export class EmailAlreadyTakenException extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = ExceptionType.emailAlreadyTakenException;
+    }
+}

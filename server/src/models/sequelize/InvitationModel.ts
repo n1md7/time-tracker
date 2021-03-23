@@ -61,27 +61,41 @@ export default class InvitationModel extends BaseModelSequelize<typeof model> {
         });
     }
 
-    public async getInvitationByKey(key: string): Promise<InvitationType|null> {
+    public async getInvitationByKey(key: string): Promise<InvitationType | null> {
         const invitation = await this.model.findOne({
             where: {
                 invitationKey: key
             }
         });
 
-        if(!invitation){
+        if (!invitation) {
             return null;
         }
 
         return invitation.dataValues as InvitationType;
     }
 
-    public async updateStatusById(id: number, status: InvitationStatus, userId: number): Promise<void> {
+    public async getInvitationByEmail(email: string): Promise<InvitationType | null> {
+        const invitation = await this.model.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (!invitation) {
+            return null;
+        }
+
+        return invitation.dataValues as InvitationType;
+    }
+
+    public async updateStatusByEmail(email: string, status: InvitationStatus): Promise<void> {
         const [affectedRows] = await this.model.update({status}, {
-            where: {id, createdBy: userId}
+            where: {email}
         });
 
         if (affectedRows === 0) {
-            throw new MysqlUpdateException(`updateStatusById(${status}, where: ${id}, ${status}, ${userId}) didn't modify the record`);
+            throw new MysqlUpdateException(`updateStatusByEmail(${status}, where: ${email}) didn't modify the record`);
         }
     }
 

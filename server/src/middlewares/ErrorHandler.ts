@@ -30,6 +30,7 @@ class ErrorHandler {
             case ExceptionType.requestValidationException:
             case ExceptionType.teamNotFoundException:
             case ExceptionType.invitationEmailNotFoundException:
+            case ExceptionType.emailAlreadyTakenException:
                 ctx.status = HttpCode.badRequest;
                 ctx.body = error.message;
                 break;

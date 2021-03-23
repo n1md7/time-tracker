@@ -72,7 +72,9 @@ export default function Registration() {
   }, [fetchModified]);
 
   useEffect(() => {
-    fetchEmailByInviteKey(params.invitationKey);
+    if (params.invitationKey) {
+      fetchEmailByInviteKey(params.invitationKey);
+    }
     if (isOk) {
       Alert('You have signed up successfully!');
       history.push('/sign-in');
@@ -80,7 +82,7 @@ export default function Registration() {
     regError && Alert(regError, AlertType.ERROR);
   }, [responseModified]);
 
-  if (fetchingInviteInfo) {
+  if (params.invitationKey && fetchingInviteInfo) {
     return <Loading/>;
   }
 
