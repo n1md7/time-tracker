@@ -9,6 +9,7 @@ import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Members from './pages/Members';
 import Teams from './pages/teams/Teams';
+import Team from './pages/teams/Team';
 import Projects from './pages/projects/Projects';
 import {ConfirmModalType} from './types';
 import {updateModal} from './redux/actions';
@@ -35,6 +36,7 @@ function App() {
       <ProtectedRoute path="/settings" component={Settings}/>
       <ProtectedRoute path="/profile" component={Profile}/>
       <ProtectedRoute path="/members" component={Members}/>
+      <ProtectedRoute path="/team/:teamId" component={Team}/>
       <ProtectedRoute path="/teams" component={Teams}/>
       <ProtectedRoute path="/projects" component={Projects}/>
       <ProtectedRoute path="/notifications" component={Notifications}/>

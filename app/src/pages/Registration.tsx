@@ -15,7 +15,8 @@ enum Field {
   jobPosition = 'jobPosition',
   personalNumber = 'personalNumber',
   password = 'password',
-  confirmPassword = 'confirmPassword'
+  confirmPassword = 'confirmPassword',
+  termsAgreed = 'termsAgreed'
 }
 
 export default function Registration() {
@@ -26,6 +27,7 @@ export default function Registration() {
   const [personalNumber, setPersonalNumber] = useInputChange('');
   const [jobPosition, setJobPosition] = useInputChange('');
   const [confirmPassword, setConfirmPassword] = useInputChange('');
+  const [termsAgreed, setTermsAgreed] = useState<boolean>(false);
   const [regHandler, isOk, regError, responseModified, disabled, errorFields] = useRegister();
   const [submitted, setSubmitted] = useState<boolean>(false);
   const history = useHistory();
@@ -41,7 +43,8 @@ export default function Registration() {
       email,
       confirmPassword,
       personalNumber,
-      jobPosition
+      jobPosition,
+      termsAgreed
     });
   };
 
@@ -66,11 +69,11 @@ export default function Registration() {
   return (
     <div className="container">
       <div className="row mt-5 justify-content-center">
-        <div className="col-md-5 text-center">
+        <div className="col-lg-6 text-center">
           <img className="App-logo" src={logo} alt="logo.png"/>
         </div>
         <div className="col-12">{/**/}</div>
-        <div className="col-md-5">
+        <div className="col-lg-5">
           <h3 className="my-3 text-center">User Registration</h3>
           <form onSubmit={onSubmit}>
             <div className="form-group">
@@ -79,38 +82,6 @@ export default function Registration() {
                      className={showError(Field.email)} placeholder="E-mail"/>
               <div className="invalid-feedback">
                 Please use valid E-mail address
-              </div>
-            </div>
-            <div className="form-group">
-              <small className="form-text text-muted">Enter your First Name</small>
-              <input onChange={setFirstName}
-                     className={showError(Field.firstName)} placeholder="First name"/>
-              <div className="invalid-feedback">
-                Minimum 2 and maximum 32 alphabetic characters
-              </div>
-            </div>
-            <div className="form-group">
-              <small className="form-text text-muted">Enter your Last Name</small>
-              <input onChange={setLastName}
-                     className={showError(Field.lastName)} placeholder="Last name"/>
-              <div className="invalid-feedback">
-                Minimum 2 and maximum 32 alphabetic characters
-              </div>
-            </div>
-            <div className="form-group">
-              <small className="form-text text-muted">Enter your Job Position</small>
-              <input onChange={setJobPosition}
-                     className={showError(Field.jobPosition)} placeholder="Job position"/>
-              <div className="invalid-feedback">
-                Minimum 2 and maximum 128 alphabetic characters
-              </div>
-            </div>
-            <div className="form-group">
-              <small className="form-text text-muted">Enter your Personal Number</small>
-              <input onChange={setPersonalNumber}
-                     className={showError(Field.personalNumber)} placeholder="Personal number"/>
-              <div className="invalid-feedback">
-                Should be 11 numbers long. e.g 01234567890
               </div>
             </div>
             <div className="form-group">
@@ -129,7 +100,54 @@ export default function Registration() {
                 Minimum 8 and maximum 128 characters
               </div>
             </div>
-            <div className="form-group text-center">
+            <div className="form-row">
+              <div className="form-group col-lg-6">
+                <small className="form-text text-muted">Enter your First Name</small>
+                <input onChange={setFirstName}
+                       className={showError(Field.firstName)} placeholder="First name"/>
+                <div className="invalid-feedback">
+                  Minimum 2 and maximum 32 alphabetic characters
+                </div>
+              </div>
+              <div className="form-group col-lg-6">
+                <small className="form-text text-muted">Enter your Last Name</small>
+                <input onChange={setLastName}
+                       className={showError(Field.lastName)} placeholder="Last name"/>
+                <div className="invalid-feedback">
+                  Minimum 2 and maximum 32 alphabetic characters
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <small className="form-text text-muted">Enter your Job Position</small>
+              <input onChange={setJobPosition}
+                     className={showError(Field.jobPosition)} placeholder="Job position"/>
+              <div className="invalid-feedback">
+                Minimum 2 and maximum 128 alphabetic characters
+              </div>
+            </div>
+            <div className="form-group">
+              <small className="form-text text-muted">Enter your Personal Number</small>
+              <input onChange={setPersonalNumber}
+                     className={showError(Field.personalNumber)} placeholder="Personal number"/>
+              <div className="invalid-feedback">
+                Should be 11 numbers long. e.g 01234567890
+              </div>
+            </div>
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox" id="terms"
+                onClick={() => setTermsAgreed(!termsAgreed)}
+                className={`${showError(Field.termsAgreed)} custom-control-input`}
+              />
+              <label className="custom-control-label" htmlFor="terms">
+                I agree terms and conditions <Required/>
+              </label>
+              <div className="invalid-feedback">
+                You need to agree terms and conditions
+              </div>
+            </div>
+            <div className="form-group text-center mt-4">
               <button disabled={disabled} type="submit"
                       className="btn btn-outline-secondary w-100">
                 {

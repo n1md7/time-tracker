@@ -11,6 +11,7 @@ type Register = {
   personalNumber: string;
   email: string;
   confirmPassword: string;
+  termsAgreed: boolean;
 };
 export default function useRegister(): [(payload: Register) => void, boolean, string, number, boolean, string[]] {
   const [isOk, setIsOk] = useState<boolean>(false);

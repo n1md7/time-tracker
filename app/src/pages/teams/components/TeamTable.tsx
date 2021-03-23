@@ -28,13 +28,13 @@ export default function TeamTable({teams, fetching}: Teams) {
       </thead>
       <tbody>
       {
-        teams.map((project, key) =>
+        teams.map((team, key) =>
           <TableRow
-            key={key}
+            key={team.id}
             index={key}
-            id={project.id}
-            name={project.name}
-            description={project.description}
+            id={team.id}
+            name={team.name}
+            description={team.description}
           />)
       }
       </tbody>

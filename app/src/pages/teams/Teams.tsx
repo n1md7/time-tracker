@@ -2,8 +2,8 @@ import React, {FormEvent, useEffect, useState} from "react";
 import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
 import useCreateTeam from "../../hooks/team/useCreateTeam";
-import useFetchTeam from "../../hooks/team/useFetchTeam";
-import useFetchProjects from "../../hooks/project/useFetchProject";
+import useFetchTeams from "../../hooks/team/useFetchTeams";
+import useFetchProjects from "../../hooks/project/useFetchProjects";
 import Alert, {AlertType} from "../../components/Alert";
 import TeamTable from "../teams/components/TeamTable";
 import {Form, Spinner} from "react-bootstrap";
@@ -21,7 +21,7 @@ export default function Teams() {
   const [projectId, setProjectId, resetProjectId] = useInputChange<number, any>(0);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [createTeamHandler, isOk, authError, responseModified, disabled, errorFields] = useCreateTeam();
-  const [fetchTeams, teams, fetchingTeams] = useFetchTeam();
+  const [fetchTeams, teams, fetchingTeams] = useFetchTeams();
   const [fetchProjects, projects, fetchingProjects] = useFetchProjects();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -61,7 +61,7 @@ export default function Teams() {
     <NavBar>
       <div className="row">{/**/}</div>
       <div className="row mt-3 justify-content-center no-gutters">
-        <div className="col-md-5">
+        <div className="col-lg-5">
           <h3 className="my-3 text-center">Create team</h3>
           <form onSubmit={onSubmit}>
             <div className="form-group">
@@ -76,7 +76,7 @@ export default function Teams() {
                 Please use at least 2 characters and max 32
               </div>
             </div>
-            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+            <div className="form-group">
               <small className="form-text text-muted">Attach project <Required/></small>
               <Form.Control
                 disabled={fetchingProjects}
@@ -97,12 +97,13 @@ export default function Teams() {
                   projects.length ? 'Please select the field' : 'Create a project first'
                 }
               </div>
-            </Form.Group>
+            </div>
             <div className="form-group">
               <small className="form-text text-muted">New team description</small>
-              <input onChange={setDescription} type="text"
-                     value={description}
-                     className={showError(Field.description)} placeholder="Description"/>
+              <input
+                onChange={setDescription} type="text"
+                value={description}
+                className={showError(Field.description)} placeholder="Description"/>
               <div className="invalid-feedback">
                 Max characters allowed 512
               </div>
@@ -121,7 +122,7 @@ export default function Teams() {
         </div>
       </div>
       <div className="row mt-3 justify-content-center no-gutters">
-        <div className="col-md-5">
+        <div className="col-lg-5">
           <h3 className="my-3 text-center">My teams</h3>
           <TeamTable teams={teams} fetching={fetchingTeams}/>
         </div>

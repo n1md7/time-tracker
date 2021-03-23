@@ -20,7 +20,8 @@ export type MemberType = {
 export enum MemberStatus {
     active = 1,
     disabled,
-    pendingApproval
+    pendingApproval,
+    pendingRegistration
 }
 
 export default class MemberModel extends BaseModelSequelize<typeof model> {

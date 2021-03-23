@@ -3,21 +3,21 @@ import {AxiosResponse} from 'axios';
 import Alert, {AlertType} from "../../components/Alert";
 import {useDispatch, useSelector} from "react-redux";
 import {RootReducer} from "../../redux/reducers";
-import {updateTeams} from "../../redux/actions";
-import {Team} from "../../types";
+import {updateProjects} from "../../redux/actions";
+import {Project} from "../../types";
 import {useState} from 'react';
 
-export default function useFetchTeam(): [() => void, Team[], boolean] {
+export default function useFetchProjects(): [() => void, Project[], boolean] {
   const dispatch = useDispatch();
-  const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
+  const projects = useSelector<RootReducer, Project[]>(({projects}) => projects.all);
   const [fetching, setFetching] = useState<boolean>(true);
 
-  const fetchTeams = () => {
+  const fetchProjects = () => {
     httpClient
-      .get<AxiosResponse, AxiosResponse<Team[] | string>>('v1/teams')
+      .get<AxiosResponse, AxiosResponse<Project[] | string>>('v1/projects')
       .then((response) => {
         if (response.status === 200) {
-          dispatch(updateTeams({all: response.data as Team[]}));
+          dispatch(updateProjects({all: response.data as Project[]}));
         } else {
           Alert(response.data as string, AlertType.ERROR);
         }
@@ -29,5 +29,5 @@ export default function useFetchTeam(): [() => void, Team[], boolean] {
     });
   }
 
-  return [fetchTeams, teams, fetching];
+  return [fetchProjects, projects, fetching];
 };

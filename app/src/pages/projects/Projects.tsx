@@ -4,7 +4,7 @@ import useCreateProject from "../../hooks/project/useCreateProject";
 import Alert, {AlertType} from "../../components/Alert";
 import useInputChange from "../../hooks/useChange";
 import ProjectTable from "./components/ProjectTable";
-import useFetchProject from "../../hooks/project/useFetchProject";
+import useFetchProjects from "../../hooks/project/useFetchProjects";
 import {Spinner} from "react-bootstrap";
 import Required from "../../components/Required";
 
@@ -18,7 +18,7 @@ export default function Projects() {
   const [description, setDescription, resetDescription] = useInputChange('');
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [createProjectHandler, isOk, authError, responseModified, disabled, errorFields] = useCreateProject();
-  const [fetchProjects, projects, fetching] = useFetchProject();
+  const [fetchProjects, projects, fetching] = useFetchProjects();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -49,7 +49,7 @@ class UserController extends BaseController implements UserInterface {
             throw new RequestValidationException(validation.error.details);
         }
         if (validation.value.password !== validation.value.confirmPassword) {
-            throw new PasswordsNotMatchException("'password' and 'confirmPassword' didn't match!");
+            throw new PasswordsNotMatchException("Passwords didn't match!");
         }
         const model = new UserModelSequelize();
         await model.addNewUser(validation.value);

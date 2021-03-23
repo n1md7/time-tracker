@@ -4,13 +4,13 @@ import {useDispatch} from "react-redux";
 import {updateModal} from "../../../redux/actions";
 import useRemove from "../../../hooks/modal/useRemove";
 import Alert, {AlertType} from "../../../components/Alert";
-import useFetchProject from "../../../hooks/project/useFetchProject";
+import useFetchProjects from "../../../hooks/project/useFetchProjects";
 import {VscChromeClose} from 'react-icons/vsc';
 
 export default function TableRow({name, description, index, id}: Project & { index: number }) {
   const dispatch = useDispatch();
   const [removeRequest, removed, removeError, responseModified, disabled] = useRemove();
-  const [fetchProjects] = useFetchProject();
+  const [fetchProjects] = useFetchProjects();
 
   const removeHandler = () => {
     dispatch(updateModal({

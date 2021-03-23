@@ -31,7 +31,7 @@ export default function ProjectTable({projects, fetching}: Projects) {
       {
         projects.map((project, key) =>
           <TableRow
-            key={key}
+            key={project.id}
             index={key}
             id={project.id}
             name={project.name}

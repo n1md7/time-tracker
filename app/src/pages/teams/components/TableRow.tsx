@@ -4,13 +4,16 @@ import {useDispatch} from "react-redux";
 import {updateModal} from "../../../redux/actions";
 import useRemove from "../../../hooks/modal/useRemove";
 import Alert, {AlertType} from "../../../components/Alert";
-import useFetchTeam from "../../../hooks/team/useFetchTeam";
+import useFetchTeams from "../../../hooks/team/useFetchTeams";
 import {VscChromeClose} from 'react-icons/vsc';
+import {Link} from 'react-router-dom';
+import {RiTeamLine} from 'react-icons/ri';
+import {Nav} from 'react-bootstrap';
 
 export default function TableRow({name, description, index, id}: Team & { index: number }) {
   const dispatch = useDispatch();
   const [removeRequest, removed, removeError, responseModified, disabled] = useRemove();
-  const [fetchTeams] = useFetchTeam();
+  const [fetchTeams] = useFetchTeams();
 
   const removeHandler = () => {
     dispatch(updateModal({
@@ -39,7 +42,9 @@ export default function TableRow({name, description, index, id}: Team & { index:
   return (
     <tr>
       <th scope="row">{index + 1}</th>
-      <td>{name}</td>
+      <td>
+        <Link className="" to={{pathname: `/team/${id}`}}>{name}</Link>
+      </td>
       <td>
         {description}
       </td>
