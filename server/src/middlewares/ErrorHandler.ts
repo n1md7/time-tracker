@@ -28,6 +28,8 @@ class ErrorHandler {
             case ExceptionType.validationErrorException:
             case ExceptionType.passwordsNotMatchException:
             case ExceptionType.requestValidationException:
+            case ExceptionType.teamNotFoundException:
+            case ExceptionType.invitationEmailNotFoundException:
                 ctx.status = HttpCode.badRequest;
                 ctx.body = error.message;
                 break;

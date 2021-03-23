@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true
       },
       text: Sequelize.STRING(512),
-      userId: Sequelize.INTEGER(11),
+      email: Sequelize.STRING(128),
       type: {
         type: Sequelize.INTEGER(2),
         allowNull: false
@@ -32,7 +32,7 @@ module.exports = {
       collate: 'utf8_general_ci'
     });
 
-    await queryInterface.addIndex('notifications', ['userId']);
+    await queryInterface.addIndex('notifications', ['email', 'type', 'status']);
   },
 
   down: async (queryInterface, Sequelize) => {

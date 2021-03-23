@@ -21,3 +21,17 @@ export class RequestValidationException extends Error {
         this.name = ExceptionType.requestValidationException;
     }
 }
+
+export class TeamNotFoundException extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = ExceptionType.teamNotFoundException;
+    }
+}
+
+export class InvitationEmailNotFoundException extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = ExceptionType.invitationEmailNotFoundException;
+    }
+}

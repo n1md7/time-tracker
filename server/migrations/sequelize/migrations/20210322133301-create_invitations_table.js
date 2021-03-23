@@ -12,6 +12,7 @@ module.exports = {
       email: Sequelize.STRING(128),
       teamId: Sequelize.INTEGER(11),
       createdBy: Sequelize.INTEGER(11),
+      invitationKey: Sequelize.STRING(128),
       status: {
         type: Sequelize.INTEGER(2),
         allowNull: false

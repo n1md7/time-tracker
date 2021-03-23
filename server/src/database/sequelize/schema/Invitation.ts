@@ -13,6 +13,10 @@ export default mysql.define(tableName, {
         type: STRING(128),
         allowNull: false,
     },
+    invitationKey: {
+        type: STRING(128),
+        allowNull: false
+    },
     teamId: {
         type: INTEGER({decimals: 11}),
         allowNull: false,

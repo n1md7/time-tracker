@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 export default class StringUtils {
 
@@ -20,6 +21,10 @@ export default class StringUtils {
     public static async hashCompare(password: string, hash: string): Promise<boolean> {
 
         return await bcrypt.compare(password, hash);
+    }
+
+    public static randomChars(len: number): string {
+        return crypto.randomBytes(len / 2).toString('hex');
     }
 
 }

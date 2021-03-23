@@ -3,6 +3,7 @@ import userRouter from './users';
 import infoRouter from './info';
 import projectRouter from './project';
 import teamRouter from './team';
+import memberRouter from './member';
 
 const apiRoute = new Router();
 const combineApiRoutes = [
@@ -10,6 +11,7 @@ const combineApiRoutes = [
     infoRouter.routes(),
     projectRouter.routes(),
     teamRouter.routes(),
+    memberRouter.routes(),
 ];
 apiRoute.use('/v1', ...combineApiRoutes);
 

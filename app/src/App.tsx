@@ -30,7 +30,7 @@ function App() {
   return (
     <Switch>
       <Route path="/sign-in" component={Authentication}/>
-      <Route path="/sign-up" component={Registration}/>
+      <Route path="/sign-up/:invitationKey?" component={Registration}/>
       <Route path="/sign-out" component={UserSignOut}/>
       <ProtectedRoute path="/" exact component={Main}/>
       <ProtectedRoute path="/settings" component={Settings}/>

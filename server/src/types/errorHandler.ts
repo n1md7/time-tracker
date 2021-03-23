@@ -35,6 +35,8 @@ export enum ExceptionType {
     requestValidationException = 'RequestValidationException',
     mysqlUpdateException = 'MysqlUpdateException',
     passwordsNotMatchException = 'PasswordsNotMatchException',
+    teamNotFoundException = 'TeamNotFoundException',
+    invitationEmailNotFoundException = 'InvitationEmailNotFoundException',
 }
 
 export enum MongoErrorCode {

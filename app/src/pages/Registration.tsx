@@ -1,12 +1,14 @@
 import useInputChange from "../hooks/useChange";
 import React, {FormEvent, useEffect, useState} from "react";
-import {useHistory} from "react-router";
+import {useHistory, useParams} from "react-router";
 import Alert, {AlertType} from "../components/Alert";
 import {Link} from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import logo from "../img/logo.png";
 import {Spinner} from "react-bootstrap";
 import Required from "../components/Required";
+import useInvite from '../hooks/useInvite';
+import Loading from '../components/Loading';
 
 enum Field {
   email = 'email',
@@ -29,8 +31,10 @@ export default function Registration() {
   const [confirmPassword, setConfirmPassword] = useInputChange('');
   const [termsAgreed, setTermsAgreed] = useState<boolean>(false);
   const [regHandler, isOk, regError, responseModified, disabled, errorFields] = useRegister();
+  const [fetchEmailByInviteKey, inviteIsOk, inviteError, fetchingInviteInfo, fetchedEmail, fetchModified] = useInvite();
   const [submitted, setSubmitted] = useState<boolean>(false);
   const history = useHistory();
+  const params = useParams<{ invitationKey: string }>();
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -59,12 +63,26 @@ export default function Registration() {
   };
 
   useEffect(() => {
+    if (inviteError) {
+      Alert(inviteError, AlertType.ERROR);
+    }
+    if (inviteIsOk) {
+      setEmail({currentTarget: {value: fetchedEmail}} as React.FormEvent<HTMLInputElement>);
+    }
+  }, [fetchModified]);
+
+  useEffect(() => {
+    fetchEmailByInviteKey(params.invitationKey);
     if (isOk) {
       Alert('You have signed up successfully!');
       history.push('/sign-in');
     }
     regError && Alert(regError, AlertType.ERROR);
   }, [responseModified]);
+
+  if (fetchingInviteInfo) {
+    return <Loading/>;
+  }
 
   return (
     <div className="container">
@@ -78,24 +96,27 @@ export default function Registration() {
           <form onSubmit={onSubmit}>
             <div className="form-group">
               <small className="form-text text-muted">Enter your E-mail <Required/></small>
-              <input onChange={setEmail}
-                     className={showError(Field.email)} placeholder="E-mail"/>
+              <input
+                onChange={setEmail} disabled={inviteIsOk} value={email}
+                className={showError(Field.email)} placeholder="E-mail"/>
               <div className="invalid-feedback">
                 Please use valid E-mail address
               </div>
             </div>
             <div className="form-group">
               <small className="form-text text-muted">Enter your password <Required/></small>
-              <input onChange={setPassword} type="password"
-                     className={showError(Field.password)} placeholder="Password"/>
+              <input
+                onChange={setPassword} type="password" value={password}
+                className={showError(Field.password)} placeholder="Password"/>
               <div className="invalid-feedback">
                 Minimum 8 and maximum 128 characters
               </div>
             </div>
             <div className="form-group">
               <small className="form-text text-muted">Confirm your password <Required/></small>
-              <input onChange={setConfirmPassword} type="password"
-                     className={showError(Field.confirmPassword)} placeholder="Confirm password"/>
+              <input
+                onChange={setConfirmPassword} type="password" value={confirmPassword}
+                className={showError(Field.confirmPassword)} placeholder="Confirm password"/>
               <div className="invalid-feedback">
                 Minimum 8 and maximum 128 characters
               </div>
@@ -103,16 +124,18 @@ export default function Registration() {
             <div className="form-row">
               <div className="form-group col-lg-6">
                 <small className="form-text text-muted">Enter your First Name</small>
-                <input onChange={setFirstName}
-                       className={showError(Field.firstName)} placeholder="First name"/>
+                <input
+                  onChange={setFirstName} value={firstName}
+                  className={showError(Field.firstName)} placeholder="First name"/>
                 <div className="invalid-feedback">
                   Minimum 2 and maximum 32 alphabetic characters
                 </div>
               </div>
               <div className="form-group col-lg-6">
                 <small className="form-text text-muted">Enter your Last Name</small>
-                <input onChange={setLastName}
-                       className={showError(Field.lastName)} placeholder="Last name"/>
+                <input
+                  onChange={setLastName} value={lastName}
+                  className={showError(Field.lastName)} placeholder="Last name"/>
                 <div className="invalid-feedback">
                   Minimum 2 and maximum 32 alphabetic characters
                 </div>
@@ -120,16 +143,18 @@ export default function Registration() {
             </div>
             <div className="form-group">
               <small className="form-text text-muted">Enter your Job Position</small>
-              <input onChange={setJobPosition}
-                     className={showError(Field.jobPosition)} placeholder="Job position"/>
+              <input
+                onChange={setJobPosition} value={jobPosition}
+                className={showError(Field.jobPosition)} placeholder="Job position"/>
               <div className="invalid-feedback">
                 Minimum 2 and maximum 128 alphabetic characters
               </div>
             </div>
             <div className="form-group">
               <small className="form-text text-muted">Enter your Personal Number</small>
-              <input onChange={setPersonalNumber}
-                     className={showError(Field.personalNumber)} placeholder="Personal number"/>
+              <input
+                onChange={setPersonalNumber} value={personalNumber}
+                className={showError(Field.personalNumber)} placeholder="Personal number"/>
               <div className="invalid-feedback">
                 Should be 11 numbers long. e.g 01234567890
               </div>

@@ -48,6 +48,17 @@ export default class TeamModel extends BaseModelSequelize<typeof model> {
         });
     }
 
+    public async getTeamById(teamId: number): Promise<TeamType | null> {
+
+        const team = await this.model.findOne({
+            where: {id: teamId}
+        });
+        if (!team) {
+            return null;
+        }
+        return team.dataValues as TeamType;
+    }
+
     public async getTeamsByUserId(userId: number): Promise<TeamType[]> {
 
         return await this.model.findAll({

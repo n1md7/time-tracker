@@ -14,8 +14,8 @@ export default mysql.define(tableName, {
         allowNull: true,
         defaultValue: null
     },
-    userId: {
-        type: INTEGER({decimals: 11}),
+    email: {
+        type: STRING(128),
         allowNull: true,
         defaultValue: null
     },
@@ -26,11 +26,7 @@ export default mysql.define(tableName, {
     status: {
         type: INTEGER({decimals: 2}),
         allowNull: false
-    },
-    createdBy: {
-        type: INTEGER({decimals: 11}),
-        allowNull: false
-    },
+    }
 }, {
     tableName,
     timestamps: true
