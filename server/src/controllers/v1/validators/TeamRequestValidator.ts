@@ -9,3 +9,7 @@ export const createTeamSchema = Joi.object({
 export const removeTeamSchema = Joi.object({
     id: Joi.number().positive().greater(0).required().label('Team ID'),
 });
+
+export const teamInfoSchema = Joi.object({
+    id: Joi.number().positive().greater(0).required().label('Team ID'),
+});

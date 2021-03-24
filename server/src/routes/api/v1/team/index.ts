@@ -6,6 +6,7 @@ const teamRouter = new Router();
 
 teamRouter.use(['/team', '/teams'], authValidator);
 teamRouter.get('/teams', TeamController.getUserTeams);
+teamRouter.get('/team/info/:id', TeamController.getTeamInfo);
 teamRouter.delete('/team/:id', TeamController.removeTeamById);
 teamRouter.put('/team/new', TeamController.createNewTeam);
 

@@ -1,14 +1,10 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useEffect} from "react";
 import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
-import useCreateTeam from "../../hooks/team/useCreateTeam";
-import useFetchTeams from "../../hooks/team/useFetchTeams";
-import useFetchProjects from "../../hooks/project/useFetchProjects";
-import Alert, {AlertType} from "../../components/Alert";
-import TeamTable from "../teams/components/TeamTable";
-import {Form, Spinner} from "react-bootstrap";
-import Required from "../../components/Required";
+import {Form} from "react-bootstrap";
 import {useParams} from 'react-router';
+import useFetchTeamById from '../../hooks/team/useFetchTeamById';
+import Loading from '../../components/Loading';
 
 enum Field {
   name = 'name',
@@ -22,10 +18,26 @@ type GetParamType = {
 
 export default function Team() {
   const {teamId} = useParams<GetParamType>();
+  const [fetch, info, fetching] = useFetchTeamById();
+  const [name, setName] = useInputChange('');
+  const [description, setDescription] = useInputChange('');
+  const [project, setProject] = useInputChange<number>(-1);
 
   useEffect(() => {
-    console.log(teamId)
-  }, [])
+    fetch(teamId);
+  }, []);
+
+  useEffect(() => {
+    if (info) {
+      setName({currentTarget: {value: info.name}} as React.FormEvent<HTMLInputElement>);
+      setDescription({currentTarget: {value: info.description}} as React.FormEvent<HTMLInputElement>);
+      // setProject({currentTarget: {value: info.projectId as number}} as React.FormEvent<HTMLInputElement>);
+    }
+  }, [info]);
+
+  if (fetching) {
+    return <Loading/>;
+  }
 
   return (
     <NavBar>
@@ -33,11 +45,11 @@ export default function Team() {
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-lg-5">
           <h3 className="my-3 text-center">Team information</h3>
-          id {teamId}
           <form>
             <div className="form-group">
               <small className="form-text text-muted">Team name</small>
               <input
+                value={name}
                 type="text" className={'form-control'}
                 placeholder="Name"/>
               <div className="invalid-feedback">
@@ -47,6 +59,7 @@ export default function Team() {
             <div className="form-group">
               <small className="form-text text-muted">Attach project</small>
               <Form.Control
+                value={project}
                 as="select"
                 className={'form-control'}
                 custom>
@@ -59,6 +72,7 @@ export default function Team() {
             <div className="form-group">
               <small className="form-text text-muted">Team description</small>
               <input
+                value={description}
                 type="text" className={'form-control'}
                 placeholder="Description"/>
               <div className="invalid-feedback">

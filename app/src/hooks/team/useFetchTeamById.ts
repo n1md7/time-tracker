@@ -1,23 +1,26 @@
 import {httpClient} from '../../services/HttpClient';
 import {AxiosResponse} from 'axios';
 import Alert, {AlertType} from "../../components/Alert";
-import {useDispatch, useSelector} from "react-redux";
-import {RootReducer} from "../../redux/reducers";
-import {updateTeams} from "../../redux/actions";
-import {Team} from "../../types";
+import {Project} from "../../types";
 import {useState} from 'react';
 
-export default function useFetchTeamById(teamId: string): [() => void, Team[], boolean] {
-  const dispatch = useDispatch();
-  const teams = useSelector<RootReducer, Team[]>(({teams}) => teams.all);
+type FetchType = {
+  name: string;
+  description: string;
+  projectId: number;
+  projects: Project[]
+}
+
+export default function useFetchTeamById(): [(id: string) => void, FetchType | null, boolean] {
+  const [data, setData] = useState<FetchType | null>(null);
   const [fetching, setFetching] = useState<boolean>(true);
 
-  const fetchTeams = () => {
+  const fetch = (id: string) => {
     httpClient
-      .get<AxiosResponse, AxiosResponse<Team[] | string>>('v1/teams')
+      .get<AxiosResponse, AxiosResponse<FetchType | string>>(`v1/team/info/${id}`)
       .then((response) => {
         if (response.status === 200) {
-          dispatch(updateTeams({all: response.data as Team[]}));
+          setData(response.data as FetchType);
         } else {
           Alert(response.data as string, AlertType.ERROR);
         }
@@ -29,5 +32,5 @@ export default function useFetchTeamById(teamId: string): [() => void, Team[], b
     });
   }
 
-  return [fetchTeams, teams, fetching];
+  return [fetch, data, fetching];
 };
