@@ -7,7 +7,7 @@ const projectRouter = new Router();
 projectRouter.use(['/project', '/projects'], authValidator);
 projectRouter.get('/projects', ProjectController.getUserProjects);
 projectRouter.post('/project', ProjectController.createNewProject);
-projectRouter.put('/project/:id', ProjectController.createNewProject);
+projectRouter.put('/project/:id', ProjectController.updateProjectById);
 projectRouter.delete('/project/:id', ProjectController.removeProjectById);
 
 export default projectRouter;

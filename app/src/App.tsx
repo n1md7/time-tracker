@@ -11,12 +11,11 @@ import Members from './pages/Members';
 import Teams from './pages/teams/Teams';
 import Team from './pages/teams/Team';
 import Projects from './pages/projects/Projects';
-import {ConfirmModalType} from './types';
-import {updateModal} from './redux/actions';
+import {resetModal} from './redux/actions';
 import {useDispatch} from 'react-redux';
 import Notifications from './pages/Notifications';
-import './styles/App.scss';
 import NavBar from './components/NavBar';
+import './styles/App.scss';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ function App() {
     // Reset state on page refresh
     // This is problematic only in Chrome
     // And caused by Redux-dev tool extension
-    dispatch(updateModal({show: false} as ConfirmModalType));
+    dispatch(resetModal());
   }, []);
 
   return (

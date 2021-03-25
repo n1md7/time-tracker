@@ -12,6 +12,10 @@ export const updateModal = data => ({
   ...data
 });
 
+export const resetModal = () => ({
+  type: ModalAction.reset
+});
+
 export const updateProjects = data => ({
   type: ProjectAction.update,
   ...data

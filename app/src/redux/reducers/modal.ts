@@ -1,14 +1,15 @@
-import {ButtonVariant, ConfirmModalType} from "../../types";
+import {ButtonVariant, ConfirmModalType} from '../../types';
 
 export enum ModalAction {
-  update = 'modal-update'
+  update = 'modal-update',
+  reset = 'modal-reset',
 }
 
 type ModalActionType = {
   type: ModalAction;
 }
 
-const modal = (state: ConfirmModalType = {
+const modalDefaultState = {
   header: '...',
   body: '...',
   confirmText: 'Confirm',
@@ -20,17 +21,21 @@ const modal = (state: ConfirmModalType = {
   },
   confirmHandler: () => {
     console.log('You just clicked pre-configured confirm button');
-  }
-}, {type, ...rest}: ModalActionType) => {
+  },
+};
+
+const modal = (state: ConfirmModalType = modalDefaultState, {type, ...rest}: ModalActionType) => {
   switch (type) {
     case ModalAction.update:
       return {
         ...state,
-        ...rest
+        ...rest,
       };
+    case ModalAction.reset:
+      return modalDefaultState;
     default:
       return state;
   }
-}
+};
 
 export default modal;

@@ -32,7 +32,7 @@ export default function ModalConfirm(props: ConfirmModalType) {
           variant={modal.confirmButtonVariant}>{
           modal.confirmDisabled ? (
             <>
-              <span>Confirming...</span>
+              <span>Sending...</span>
               <Spinner className="align-self-center ml-1" animation="border" variant="secondary" size="sm"/>
             </>
           ) : modal.confirmText

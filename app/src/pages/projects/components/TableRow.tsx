@@ -1,10 +1,10 @@
-import React, {useEffect} from "react";
-import {ConfirmModalType, Project} from "../../../types";
-import {useDispatch} from "react-redux";
-import {updateModal} from "../../../redux/actions";
-import useRemove from "../../../hooks/modal/useRemove";
-import Alert, {AlertType} from "../../../components/Alert";
-import useFetchProjects from "../../../hooks/project/useFetchProjects";
+import React, {useEffect} from 'react';
+import {ButtonVariant, ConfirmModalType, Project} from '../../../types';
+import {useDispatch} from 'react-redux';
+import {resetModal, updateModal} from '../../../redux/actions';
+import useRemove from '../../../hooks/modal/useRemove';
+import Alert, {AlertType} from '../../../components/Alert';
+import useFetchProjects from '../../../hooks/project/useFetchProjects';
 import {VscChromeClose} from 'react-icons/vsc';
 import {FiEdit} from 'react-icons/fi';
 import ProjectUpdate from './ProjectUpdate';
@@ -18,13 +18,15 @@ export default function TableRow({name, description, index, id}: Project & { ind
     dispatch(updateModal({
       header: `Are you sure?`,
       body: `"${name}" is about to remove`,
+      confirmButtonVariant: ButtonVariant.danger,
+      confirmText: 'Confirm',
       show: true,
-      closeHandler: () => dispatch(updateModal({show: false})),
+      closeHandler: () => dispatch(resetModal()),
       confirmHandler: async () => {
         dispatch(updateModal({confirmDisabled: true} as ConfirmModalType));
         await removeRequest(`v1/project/${id}`);
         dispatch(updateModal({confirmDisabled: false} as ConfirmModalType));
-      }
+      },
     }));
   };
 
@@ -32,10 +34,13 @@ export default function TableRow({name, description, index, id}: Project & { ind
     dispatch(updateModal({
       header: 'Update project',
       show: true,
+      confirmButtonVariant: ButtonVariant.primary,
+      confirmText: 'Update',
       body: <ProjectUpdate id={id} name={name} description={description}/>,
-      closeHandler: () => dispatch(updateModal({show: false})),
+      closeHandler: () => dispatch(resetModal()),
       // This triggers submit in ProjectUpdate component
-      confirmHandler: () => dispatch(updateModal({confirmDisabled: true}))
+      // confirmDisabled change is being listened by top level component
+      confirmHandler: () => dispatch(updateModal({confirmDisabled: true})),
     } as ConfirmModalType));
   };
 
@@ -43,7 +48,7 @@ export default function TableRow({name, description, index, id}: Project & { ind
     if (removed) {
       Alert(`Project "${name}" has been removed`, AlertType.SUCCESS);
       fetchProjects();
-      dispatch(updateModal({show: false} as ConfirmModalType));
+      dispatch(resetModal());
     }
     removeError && Alert(removeError, AlertType.ERROR);
   }, [responseModified]);

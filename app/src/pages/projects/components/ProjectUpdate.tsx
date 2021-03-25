@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import Alert, {AlertType} from "../../../components/Alert";
-import useInputChange from "../../../hooks/useChange";
-import useFetchProjects from "../../../hooks/project/useFetchProjects";
-import Required from "../../../components/Required";
+import React, {useEffect, useState} from 'react';
+import Alert, {AlertType} from '../../../components/Alert';
+import useInputChange from '../../../hooks/useChange';
+import useFetchProjects from '../../../hooks/project/useFetchProjects';
+import Required from '../../../components/Required';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootReducer} from '../../../redux/reducers';
 import useUpdateProject from '../../../hooks/project/useUpdateProject';
-import {updateModal} from '../../../redux/actions';
+import {resetModal} from '../../../redux/actions';
 
 enum Field {
   name = 'name',
@@ -50,7 +50,7 @@ export default function ProjectUpdate(props: ProjectUpdateType) {
 
   useEffect(() => {
     if (confirmDisabled) {
-      submitHandler().then(() => dispatch(updateModal({confirmDisabled: false})));
+      submitHandler().then(() => dispatch(resetModal()));
     }
   }, [confirmDisabled]);
 
