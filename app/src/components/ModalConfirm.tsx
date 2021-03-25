@@ -1,10 +1,11 @@
-import {Button, Modal, ModalProps} from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
 import React from "react";
 import {useSelector} from "react-redux";
 import {RootReducer} from "../redux/reducers";
 import {Spinner} from 'react-bootstrap';
+import {ConfirmModalType} from '../types';
 
-export default function ModalConfirm(props: ModalProps) {
+export default function ModalConfirm(props: ConfirmModalType) {
   const modal = useSelector((store: RootReducer) => store.modal);
 
   return (

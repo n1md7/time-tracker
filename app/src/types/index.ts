@@ -15,7 +15,7 @@ export interface JoyErrorItem {
 
 export interface ConfirmModalType {
   header?: string;
-  body?: string;
+  body?: string | any;
   confirmText?: string;
   confirmButtonVariant?: ButtonVariant;
   show?: boolean;

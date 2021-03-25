@@ -1,5 +1,4 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
 import useCreateTeam from "../../hooks/team/useCreateTeam";
 import useFetchTeams from "../../hooks/team/useFetchTeams";
@@ -58,8 +57,7 @@ export default function Teams() {
   }, [responseModified]);
 
   return (
-    <NavBar>
-      <div className="row">{/**/}</div>
+    <>
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-lg-5">
           <h3 className="my-3 text-center">Create team</h3>
@@ -127,6 +125,6 @@ export default function Teams() {
           <TeamTable teams={teams} fetching={fetchingTeams}/>
         </div>
       </div>
-    </NavBar>
+    </>
   );
 }

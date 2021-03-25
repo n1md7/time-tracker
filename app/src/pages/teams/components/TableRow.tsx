@@ -7,8 +7,7 @@ import Alert, {AlertType} from "../../../components/Alert";
 import useFetchTeams from "../../../hooks/team/useFetchTeams";
 import {VscChromeClose} from 'react-icons/vsc';
 import {Link} from 'react-router-dom';
-import {RiTeamLine} from 'react-icons/ri';
-import {Nav} from 'react-bootstrap';
+import {FiEdit} from 'react-icons/fi';
 
 export default function TableRow({name, description, index, id}: Team & { index: number }) {
   const dispatch = useDispatch();
@@ -49,8 +48,10 @@ export default function TableRow({name, description, index, id}: Team & { index:
         {description}
       </td>
       <td className="text-right">
-        {/*<button className="btn btn-sm btn-outline-primary mr-md-1">Edit</button>*/}
-        <button className="btn btn-sm text-danger" onClick={removeHandler}>
+        <button className="btn btn-sm text-warning mr-md-1" title={'Edit'}>
+          <FiEdit/>
+        </button>
+        <button className="btn btn-sm text-danger" title={'Remove'} onClick={removeHandler}>
           <VscChromeClose/>
         </button>
       </td>

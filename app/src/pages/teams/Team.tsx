@@ -1,5 +1,4 @@
 import React, {FormEvent, useEffect} from "react";
-import NavBar from "../../components/NavBar";
 import useInputChange from "../../hooks/useChange";
 import {Form} from "react-bootstrap";
 import {useParams} from 'react-router';
@@ -40,8 +39,7 @@ export default function Team() {
   }
 
   return (
-    <NavBar>
-      <div className="row">{/**/}</div>
+    <>
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-lg-5">
           <h3 className="my-3 text-center">Team information</h3>
@@ -80,14 +78,15 @@ export default function Team() {
               </div>
             </div>
             <div className="form-group text-center">
-              <button type="submit"
-                      className="btn btn-primary w-100">
+              <button
+                type="submit"
+                className="btn btn-primary w-100">
                 Update
               </button>
             </div>
           </form>
         </div>
       </div>
-    </NavBar>
+    </>
   );
 }

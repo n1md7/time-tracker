@@ -9,7 +9,10 @@ import {GrUserSettings, GrNotification} from 'react-icons/gr';
 import {MdPowerSettingsNew} from 'react-icons/md';
 import {IconContext} from 'react-icons';
 
-export default function NavBar({children = []}) {
+type NavbarType = {
+  children: any | any[]
+}
+export default function NavBar({children}: NavbarType) {
 
   return (
     <>

@@ -16,6 +16,7 @@ import {updateModal} from './redux/actions';
 import {useDispatch} from 'react-redux';
 import Notifications from './pages/Notifications';
 import './styles/App.scss';
+import NavBar from './components/NavBar';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,20 +29,22 @@ function App() {
   }, []);
 
   return (
-    <Switch>
-      <Route path="/sign-in" component={Authentication}/>
-      <Route path="/sign-up/:invitationKey?" component={Registration}/>
-      <Route path="/sign-out" component={UserSignOut}/>
-      <ProtectedRoute path="/" exact component={Main}/>
-      <ProtectedRoute path="/settings" component={Settings}/>
-      <ProtectedRoute path="/profile" component={Profile}/>
-      <ProtectedRoute path="/members" component={Members}/>
-      <ProtectedRoute path="/team/:teamId" component={Team}/>
-      <ProtectedRoute path="/teams" component={Teams}/>
-      <ProtectedRoute path="/projects" component={Projects}/>
-      <ProtectedRoute path="/notifications" component={Notifications}/>
-      <Redirect to="/"/>
-    </Switch>
+    <NavBar>
+      <Switch>
+        <Route path="/sign-in" component={Authentication}/>
+        <Route path="/sign-up/:invitationKey?" component={Registration}/>
+        <Route path="/sign-out" component={UserSignOut}/>
+        <ProtectedRoute path="/" exact component={Main}/>
+        <ProtectedRoute path="/settings" component={Settings}/>
+        <ProtectedRoute path="/profile" component={Profile}/>
+        <ProtectedRoute path="/members" component={Members}/>
+        <ProtectedRoute path="/team/:teamId" component={Team}/>
+        <ProtectedRoute path="/teams" component={Teams}/>
+        <ProtectedRoute path="/projects" component={Projects}/>
+        <ProtectedRoute path="/notifications" component={Notifications}/>
+        <Redirect to="/"/>
+      </Switch>
+    </NavBar>
   );
 }
 

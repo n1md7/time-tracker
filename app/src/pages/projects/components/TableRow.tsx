@@ -6,6 +6,8 @@ import useRemove from "../../../hooks/modal/useRemove";
 import Alert, {AlertType} from "../../../components/Alert";
 import useFetchProjects from "../../../hooks/project/useFetchProjects";
 import {VscChromeClose} from 'react-icons/vsc';
+import {FiEdit} from 'react-icons/fi';
+import ProjectUpdate from './ProjectUpdate';
 
 export default function TableRow({name, description, index, id}: Project & { index: number }) {
   const dispatch = useDispatch();
@@ -26,6 +28,17 @@ export default function TableRow({name, description, index, id}: Project & { ind
     }));
   };
 
+  const editHandler = () => {
+    dispatch(updateModal({
+      header: 'Update project',
+      show: true,
+      body: <ProjectUpdate id={id} name={name} description={description}/>,
+      closeHandler: () => dispatch(updateModal({show: false})),
+      // This triggers submit in ProjectUpdate component
+      confirmHandler: () => dispatch(updateModal({confirmDisabled: true}))
+    } as ConfirmModalType));
+  };
+
   useEffect(() => {
     if (removed) {
       Alert(`Project "${name}" has been removed`, AlertType.SUCCESS);
@@ -44,7 +57,9 @@ export default function TableRow({name, description, index, id}: Project & { ind
         {description}
       </td>
       <td className="text-right">
-        {/*<button className="btn btn-sm btn-outline-primary mr-md-1">Edit</button>*/}
+        <button className="btn btn-sm text-warning mr-md-1" title={'Edit'} onClick={editHandler}>
+          <FiEdit/>
+        </button>
         <button className="btn btn-sm text-danger" title={'Remove'} onClick={removeHandler}>
           <VscChromeClose/>
         </button>
