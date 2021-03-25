@@ -1,12 +1,13 @@
-import React, {FormEvent, useEffect, useState} from "react";
-import useInputChange from "../../hooks/useChange";
-import useCreateTeam from "../../hooks/team/useCreateTeam";
-import useFetchTeams from "../../hooks/team/useFetchTeams";
-import useFetchProjects from "../../hooks/project/useFetchProjects";
-import Alert, {AlertType} from "../../components/Alert";
-import TeamTable from "../teams/components/TeamTable";
-import {Form, Spinner} from "react-bootstrap";
-import Required from "../../components/Required";
+import React, {FormEvent, useEffect, useState} from 'react';
+import useInputChange from '../../hooks/useChange';
+import useCreateTeam from '../../hooks/team/useCreateTeam';
+import useFetchTeams from '../../hooks/team/useFetchTeams';
+import useFetchProjects from '../../hooks/project/useFetchProjects';
+import Alert, {AlertType} from '../../components/Alert';
+import TeamTable from '../teams/components/TeamTable';
+import {Form, Spinner} from 'react-bootstrap';
+import Required from '../../components/Required';
+import NavBar from '../../components/NavBar';
 
 enum Field {
   name = 'name',
@@ -57,7 +58,7 @@ export default function Teams() {
   }, [responseModified]);
 
   return (
-    <>
+    <NavBar>
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-lg-5">
           <h3 className="my-3 text-center">Create team</h3>
@@ -125,6 +126,6 @@ export default function Teams() {
           <TeamTable teams={teams} fetching={fetchingTeams}/>
         </div>
       </div>
-    </>
+    </NavBar>
   );
 }

@@ -1,11 +1,12 @@
-import React, {FormEvent, useEffect, useState} from "react";
-import useCreateProject from "../../hooks/project/useCreateProject";
-import Alert, {AlertType} from "../../components/Alert";
-import useInputChange from "../../hooks/useChange";
-import ProjectTable from "./components/ProjectTable";
-import useFetchProjects from "../../hooks/project/useFetchProjects";
-import {Spinner} from "react-bootstrap";
-import Required from "../../components/Required";
+import React, {FormEvent, useEffect, useState} from 'react';
+import useCreateProject from '../../hooks/project/useCreateProject';
+import Alert, {AlertType} from '../../components/Alert';
+import useInputChange from '../../hooks/useChange';
+import ProjectTable from './components/ProjectTable';
+import useFetchProjects from '../../hooks/project/useFetchProjects';
+import {Spinner} from 'react-bootstrap';
+import Required from '../../components/Required';
+import NavBar from '../../components/NavBar';
 
 enum Field {
   name = 'name',
@@ -51,7 +52,7 @@ export default function Projects() {
   }, [responseModified]);
 
   return (
-    <>
+    <NavBar>
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-md-5">
           <h3 className="my-3 text-center">Create project</h3>
@@ -98,6 +99,6 @@ export default function Projects() {
           <ProjectTable projects={projects} fetching={fetching}/>
         </div>
       </div>
-    </>
+    </NavBar>
   );
 }

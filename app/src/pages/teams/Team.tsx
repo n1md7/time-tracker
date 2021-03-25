@@ -1,9 +1,10 @@
-import React, {FormEvent, useEffect} from "react";
-import useInputChange from "../../hooks/useChange";
-import {Form} from "react-bootstrap";
+import React, {FormEvent, useEffect} from 'react';
+import useInputChange from '../../hooks/useChange';
+import {Form} from 'react-bootstrap';
 import {useParams} from 'react-router';
 import useFetchTeamById from '../../hooks/team/useFetchTeamById';
 import Loading from '../../components/Loading';
+import NavBar from '../../components/NavBar';
 
 enum Field {
   name = 'name',
@@ -39,7 +40,7 @@ export default function Team() {
   }
 
   return (
-    <>
+    <NavBar>
       <div className="row mt-3 justify-content-center no-gutters">
         <div className="col-lg-5">
           <h3 className="my-3 text-center">Team information</h3>
@@ -87,6 +88,6 @@ export default function Team() {
           </form>
         </div>
       </div>
-    </>
+    </NavBar>
   );
 }

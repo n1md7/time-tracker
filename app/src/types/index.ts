@@ -1,5 +1,5 @@
 export enum Token {
-  name = "token"
+  name = 'token'
 }
 
 export interface JoyErrorItem {
@@ -49,4 +49,17 @@ export type Team = {
 
 export type TeamType = {
   all: Array<Team>
+}
+
+export enum UserRole {
+  basic = 1,
+  admin
+}
+
+export type UserType = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole,
 }
