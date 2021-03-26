@@ -9,22 +9,23 @@ import {VscChromeClose} from 'react-icons/vsc';
 import {FiEdit} from 'react-icons/fi';
 import ProjectUpdate from './ProjectUpdate';
 
-export default function TableRow({name, description, index, id}: Project & { index: number }) {
+export default function TableRow(props: Project & { index: number }) {
   const dispatch = useDispatch();
   const [removeRequest, removed, removeError, responseModified, disabled] = useRemove();
   const [fetchProjects] = useFetchProjects();
+  const notEditable = props.createdBy !== props.userId;
 
   const removeHandler = () => {
     dispatch(updateModal({
       header: `Are you sure?`,
-      body: `"${name}" is about to remove`,
+      body: `"${props.name}" is about to remove`,
       confirmButtonVariant: ButtonVariant.danger,
       confirmText: 'Confirm',
       show: true,
       closeHandler: () => dispatch(resetModal()),
       confirmHandler: async () => {
         dispatch(updateModal({confirmDisabled: true} as ConfirmModalType));
-        await removeRequest(`v1/project/${id}`);
+        await removeRequest(`v1/project/${props.id}`);
         dispatch(updateModal({confirmDisabled: false} as ConfirmModalType));
       },
     }));
@@ -36,7 +37,7 @@ export default function TableRow({name, description, index, id}: Project & { ind
       show: true,
       confirmButtonVariant: ButtonVariant.primary,
       confirmText: 'Update',
-      body: <ProjectUpdate id={id} name={name} description={description}/>,
+      body: <ProjectUpdate id={props.id} name={props.name} description={props.description}/>,
       closeHandler: () => dispatch(resetModal()),
       // This triggers submit in ProjectUpdate component
       // confirmDisabled change is being listened by top level component
@@ -46,7 +47,7 @@ export default function TableRow({name, description, index, id}: Project & { ind
 
   useEffect(() => {
     if (removed) {
-      Alert(`Project "${name}" has been removed`, AlertType.SUCCESS);
+      Alert(`Project "${props.name}" has been removed`, AlertType.SUCCESS);
       fetchProjects();
       dispatch(resetModal());
     }
@@ -56,19 +57,23 @@ export default function TableRow({name, description, index, id}: Project & { ind
 
   return (
     <tr>
-      <th scope="row">{index + 1}</th>
-      <td>{name}</td>
-      <td>
-        {description}
+      <th scope="row">{props.index + 1}</th>
+      <td>{props.name}</td>
+      <td colSpan={notEditable ? 2 : 1}>
+        {props.description}
       </td>
-      <td className="text-right">
-        <button className="btn btn-sm text-warning mr-md-1" title={'Edit'} onClick={editHandler}>
-          <FiEdit/>
-        </button>
-        <button className="btn btn-sm text-danger" title={'Remove'} onClick={removeHandler}>
-          <VscChromeClose/>
-        </button>
-      </td>
+      {
+        !notEditable && (
+          <td className="text-right">
+            <button className="btn btn-sm text-warning mr-md-1" title={'Edit'} onClick={editHandler}>
+              <FiEdit/>
+            </button>
+            <button className="btn btn-sm text-danger" title={'Remove'} onClick={removeHandler}>
+              <VscChromeClose/>
+            </button>
+          </td>
+        )
+      }
     </tr>
   );
 }

@@ -1,7 +1,8 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/Project';
 import {MysqlUpdateException} from '../../exceptions';
-import logWrite from '../../logger';
+import {QueryTypes} from 'sequelize';
+import Sequelize from '../../database/sequelize/Sequelize';
 
 export type RequestProjectType = {
   name: string;
@@ -17,6 +18,10 @@ export type ProjectType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type UnionProjectType = {
+  userId: number
+} & ProjectType;
 
 export enum ProjectStatus {
   active = 1,
@@ -45,12 +50,36 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     return dataValues as ProjectType;
   }
 
-  public async getProjectsByUserId(userId: number): Promise<ProjectType[]> {
+  public async getProjectsByUserId(userId: number): Promise<UnionProjectType[]> {
+    return await Sequelize.query(`
+        SELECT members.userId as userId,
+               projects.createdBy,
+               projects.name,
+               projects.id,
+               projects.description,
+               projects.createdAt,
+               projects.updatedAt
+        FROM members
+                 INNER JOIN teams
+                            ON teams.id = members.teamId
+                 INNER JOIN projects
+                            ON projects.id = teams.projectId
+        WHERE members.userId = :userId
+        UNION ALL
+        SELECT projects.createdBy as userId,
+               projects.createdBy,
+               projects.name,
+               projects.id,
+               projects.description,
+               projects.createdAt,
+               projects.updatedAt
+        FROM projects
+        WHERE projects.createdBy = :userId
+        ORDER BY createdAt ASC
 
-    return await this.model.findAll({
-      where: {
-        createdBy: userId,
-      },
+    `, {
+      replacements: {userId},
+      type: QueryTypes.SELECT,
     });
   }
 
@@ -60,7 +89,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      logWrite.warn(`updateNameById("${name}", where: ${id}, ${createdBy}) didn't modify the record`);
+      throw new MysqlUpdateException(`updateNameById("${name}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 
@@ -70,7 +99,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      logWrite.warn(`updateDescriptionById("${description}", where: ${id}, ${createdBy}) didn't modify the record`);
+      throw new MysqlUpdateException(`updateDescriptionById("${description}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 

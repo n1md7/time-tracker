@@ -30,11 +30,20 @@ export enum ButtonVariant {
   danger = 'danger'
 }
 
+export enum ProjectStatus {
+  active = 1,
+  disabled,
+}
 
 export type Project = {
   id: number;
   name: string;
+  userId: number;
   description: string;
+  createdBy: number;
+  status: ProjectStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type ProjectType = {

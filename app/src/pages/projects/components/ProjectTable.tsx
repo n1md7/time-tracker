@@ -1,6 +1,6 @@
-import React from "react";
-import {Project} from "../../../types";
-import TableRow from "./TableRow";
+import React from 'react';
+import {Project} from '../../../types';
+import TableRow from './TableRow';
 import NoData from '../../../components/NoData';
 import InlineLoading from '../../../components/InlineLoading';
 
@@ -33,9 +33,7 @@ export default function ProjectTable({projects, fetching}: Projects) {
           <TableRow
             key={project.id}
             index={key}
-            id={project.id}
-            name={project.name}
-            description={project.description}
+            {...project}
           />)
       }
       </tbody>
