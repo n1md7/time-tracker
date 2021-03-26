@@ -1,6 +1,7 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/Project';
 import {MysqlUpdateException} from '../../exceptions';
+import logWrite from '../../logger';
 
 export type RequestProjectType = {
   name: string;
@@ -59,7 +60,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      throw new MysqlUpdateException(`updateNameById(${name}, where: ${id}, ${createdBy}) didn't modify the record`);
+      logWrite.warn(`updateNameById("${name}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 
@@ -69,7 +70,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      throw new MysqlUpdateException(`updateDescriptionById(${description}, where: ${id}, ${createdBy}) didn't modify the record`);
+      logWrite.warn(`updateDescriptionById("${description}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 

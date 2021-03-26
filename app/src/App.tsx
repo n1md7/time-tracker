@@ -13,7 +13,7 @@ import Team from './pages/teams/Team';
 import Projects from './pages/projects/Projects';
 import {resetModal} from './redux/actions';
 import {useDispatch} from 'react-redux';
-import Notifications from './pages/Notifications';
+import Notifications from './pages/notification/Notifications';
 import './styles/App.scss';
 
 function App() {

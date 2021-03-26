@@ -1,111 +1,125 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/Invitation';
-import {MysqlUpdateException} from "../../exceptions";
+import {MysqlUpdateException} from '../../exceptions';
+import logWrite from '../../logger';
 
 export type RequestInvitationType = {
-    email: string;
-    teamId: number;
+  email: string;
+  teamId: number;
 };
 
 export type InvitationType = {
-    id: number;
-    email: string;
-    teamId: number;
-    createdBy: number;
-    invitationKey: string;
-    status: InvitationStatus;
-    createdAt: Date;
-    updatedAt: Date;
+  id: number;
+  email: string;
+  teamId: number;
+  createdBy: number;
+  invitationKey: string;
+  status: InvitationStatus;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export enum InvitationStatus {
-    pendingApproval = 1,
-    pendingRegistration,
-    approved,
-    declined
+  pendingApproval = 1,
+  pendingRegistration,
+  approved,
+  declined
 }
 
 export default class InvitationModel extends BaseModelSequelize<typeof model> {
 
-    constructor() {
-        super(model, tableName);
+  constructor() {
+    super(model, tableName);
+  }
+
+  public async createInvitation(
+    requestParam: RequestInvitationType,
+    userId: number,
+    status: InvitationStatus,
+    invitationKey: string): Promise<InvitationType> {
+
+    const {dataValues} = await this.model.create({
+      email: requestParam.email,
+      teamId: requestParam.teamId,
+      createdBy: userId,
+      status: status,
+      invitationKey,
+    });
+
+    if (!dataValues) {
+      throw new MysqlUpdateException(`createInvitation(${JSON.stringify(requestParam)}, ${userId}, ${status}) didn't add a new record`);
     }
 
-    public async createInvitation(
-        requestParam: RequestInvitationType,
-        userId: number,
-        status: InvitationStatus,
-        invitationKey: string): Promise<InvitationType> {
+    return dataValues as InvitationType;
+  }
 
-        const {dataValues} = await this.model.create({
-            email: requestParam.email,
-            teamId: requestParam.teamId,
-            createdBy: userId,
-            status: status,
-            invitationKey
-        });
+  public async getInvitationsByUserId(userId: number): Promise<InvitationType[]> {
 
-        if (!dataValues) {
-            throw new MysqlUpdateException(`createInvitation(${JSON.stringify(requestParam)}, ${userId}, ${status}) didn't add a new record`);
-        }
+    return await this.model.findAll({
+      where: {
+        createdBy: userId,
+      },
+    });
+  }
 
-        return dataValues as InvitationType;
+  public async getInvitationByKey(key: string): Promise<InvitationType | null> {
+    const invitation = await this.model.findOne({
+      where: {
+        invitationKey: key,
+      },
+    });
+
+    if (!invitation) {
+      return null;
     }
 
-    public async getInvitationsByUserId(userId: number): Promise<InvitationType[]> {
+    return invitation.dataValues as InvitationType;
+  }
 
-        return await this.model.findAll({
-            where: {
-                createdBy: userId
-            }
-        });
+  public async getInvitationById(id: number): Promise<InvitationType | null> {
+    const invitation = await this.model.findOne({
+      where: {id},
+    });
+
+    if (!invitation) {
+      return null;
     }
 
-    public async getInvitationByKey(key: string): Promise<InvitationType | null> {
-        const invitation = await this.model.findOne({
-            where: {
-                invitationKey: key
-            }
-        });
+    return invitation.dataValues as InvitationType;
+  }
 
-        if (!invitation) {
-            return null;
-        }
+  public async getInvitationByEmail(email: string): Promise<InvitationType | null> {
+    // EMAIL is not unique so be careful here
+    const invitation = await this.model.findOne({
+      where: {
+        email,
+      },
+    });
 
-        return invitation.dataValues as InvitationType;
+    if (!invitation) {
+      return null;
     }
 
-    public async getInvitationByEmail(email: string): Promise<InvitationType | null> {
-        const invitation = await this.model.findOne({
-            where: {
-                email
-            }
-        });
+    return invitation.dataValues as InvitationType;
+  }
 
-        if (!invitation) {
-            return null;
-        }
+  public async updateStatusByEmail(email: string, id: number, status: InvitationStatus): Promise<void> {
+    const [affectedRows] = await this.model.update({status}, {
+      where: {email, id},
+    });
 
-        return invitation.dataValues as InvitationType;
+    if (affectedRows === 0) {
+      logWrite.warn(`updateStatusByEmail(${status}, where: ${id}, ${email}) didn't modify the record`);
     }
+  }
 
-    public async updateStatusByEmail(email: string, status: InvitationStatus): Promise<void> {
-        const [affectedRows] = await this.model.update({status}, {
-            where: {email}
-        });
+  public async removeInvitationById(id: number, userId: number): Promise<void> {
+    const destroyed = await this.model.destroy({
+      where: {id, createdBy: userId},
+    });
 
-        if (affectedRows === 0) {
-            throw new MysqlUpdateException(`updateStatusByEmail(${status}, where: ${email}) didn't modify the record`);
-        }
+    if (!destroyed) {
+      throw new MysqlUpdateException(`removeInvitationById(${id}, ${userId}) didn't remove the record`);
     }
-
-    public async removeInvitationById(id: number, userId: number): Promise<void> {
-        const destroyed = await this.model.destroy({
-            where: {id, createdBy: userId}
-        });
-
-        if (!destroyed) {
-            throw new MysqlUpdateException(`removeInvitationById(${id}, ${userId}) didn't remove the record`);
-        }
-    }
+  }
 }

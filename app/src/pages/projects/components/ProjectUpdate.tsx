@@ -6,7 +6,7 @@ import Required from '../../../components/Required';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootReducer} from '../../../redux/reducers';
 import useUpdateProject from '../../../hooks/project/useUpdateProject';
-import {resetModal} from '../../../redux/actions';
+import {resetModal, updateModal} from '../../../redux/actions';
 
 enum Field {
   name = 'name',
@@ -29,9 +29,9 @@ export default function ProjectUpdate(props: ProjectUpdateType) {
   const dispatch = useDispatch();
 
   const submitHandler = async () => {
-    await updateProjectHandler({id: props.id, name, description});
-    fetchProjects();
-    setSubmitted(true);
+    // await updateProjectHandler({id: props.id, name, description});
+    // fetchProjects();
+    // setSubmitted(true);
   };
 
   const showError = (field: Field): string => {
@@ -50,17 +50,25 @@ export default function ProjectUpdate(props: ProjectUpdateType) {
 
   useEffect(() => {
     if (confirmDisabled) {
-      submitHandler().then(() => dispatch(resetModal()));
+      setSubmitted(true);
+      updateProjectHandler({id: props.id, name, description});
     }
   }, [confirmDisabled]);
 
   useEffect(() => {
     if (isOk) {
       Alert('Project updated successfully');
+      fetchProjects();
       resetName();
       resetDescription();
+      dispatch(resetModal());
     }
-    authError && Alert(authError, AlertType.ERROR);
+    if (authError) {
+      Alert(authError, AlertType.ERROR);
+    }
+    if (authError || errorFields) {
+      dispatch(updateModal({confirmDisabled: false}));
+    }
   }, [responseModified]);
 
   return (

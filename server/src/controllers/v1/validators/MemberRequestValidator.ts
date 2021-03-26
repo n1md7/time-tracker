@@ -8,3 +8,7 @@ export const inviteMemberSchema = Joi.object({
 export const inviteKeySchema = Joi.object({
     key: Joi.string().min(10).max(64).required().label('Invitation key'),
 });
+
+export const inviteIdSchema = Joi.object({
+    id: Joi.number().positive().required().label('Invitation ID'),
+});

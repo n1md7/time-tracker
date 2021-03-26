@@ -112,4 +112,8 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
 
     return resultRow.dataValues as UserType;
   }
+
+  public async getUserByEmail(email: string): Promise<boolean | UserType> {
+    return this.userExist(email);
+  }
 }

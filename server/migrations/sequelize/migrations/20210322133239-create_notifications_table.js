@@ -11,6 +11,7 @@ module.exports = {
       },
       text: Sequelize.STRING(512),
       email: Sequelize.STRING(128),
+      linkId: Sequelize.INTEGER(11),
       type: {
         type: Sequelize.INTEGER(2),
         allowNull: false
@@ -32,7 +33,7 @@ module.exports = {
       collate: 'utf8_general_ci'
     });
 
-    await queryInterface.addIndex('notifications', ['email', 'type', 'status']);
+    await queryInterface.addIndex('notifications', ['email', 'type', 'status', 'linkId']);
   },
 
   down: async (queryInterface, Sequelize) => {
