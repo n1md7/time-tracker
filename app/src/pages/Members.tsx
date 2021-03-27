@@ -90,7 +90,9 @@ export default function Members() {
               </div>
             </div>
             <div className="form-group">
-              <input value={email} onChange={({target: {value}}) => setEmail(value)}
+              <input
+                placeholder={'Invitee email address'}
+                value={email} onChange={({target: {value}}) => setEmail(value)}
                      type="text" className={showError(Field.email)}/>
               <div className="invalid-feedback">
                 Please add a valid E-mail address

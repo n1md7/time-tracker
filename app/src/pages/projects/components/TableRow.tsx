@@ -59,8 +59,11 @@ export default function TableRow(props: Project & { index: number }) {
     <tr>
       <th scope="row">{props.index + 1}</th>
       <td>{props.name}</td>
-      <td colSpan={notEditable ? 2 : 1}>
+      <td>
         {props.description}
+      </td>
+      <td colSpan={notEditable ? 2 : 1}>
+        {props.teamName || (<del className="text-muted">not assigned</del>)}
       </td>
       {
         !notEditable && (

@@ -36,6 +36,7 @@ export enum ProjectStatus {
 }
 
 export type Project = {
+  teamName: string;
   id: number;
   name: string;
   userId: number;

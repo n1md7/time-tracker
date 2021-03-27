@@ -22,8 +22,9 @@ export default function ProjectTable({projects, fetching}: Projects) {
       <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">name</th>
-        <th scope="col">description</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Team Name</th>
         <th scope="col">{/**/}</th>
       </tr>
       </thead>

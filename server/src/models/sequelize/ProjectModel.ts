@@ -3,6 +3,7 @@ import model, {tableName} from '../../database/sequelize/schema/Project';
 import {MysqlUpdateException} from '../../exceptions';
 import {QueryTypes} from 'sequelize';
 import Sequelize from '../../database/sequelize/Sequelize';
+import log from '../../logger';
 
 export type RequestProjectType = {
   name: string;
@@ -20,7 +21,8 @@ export type ProjectType = {
 };
 
 export type UnionProjectType = {
-  userId: number
+  userId: number,
+  teamName: string
 } & ProjectType;
 
 export enum ProjectStatus {
@@ -58,7 +60,8 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
                         projects.id,
                         projects.description,
                         projects.createdAt,
-                        projects.updatedAt
+                        projects.updatedAt,
+                        teams.name     as teamName
         FROM members
                  INNER JOIN teams
                             ON teams.id = members.teamId
@@ -72,8 +75,11 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
                projects.id,
                projects.description,
                projects.createdAt,
-               projects.updatedAt
+               projects.updatedAt,
+               teams.name         as teamName
         FROM projects
+                 LEFT JOIN teams
+                           ON teams.projectId = projects.id
         WHERE projects.createdBy = :userId
         ORDER BY createdAt ASC
 
@@ -89,7 +95,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      throw new MysqlUpdateException(`updateNameById("${name}", where: ${id}, ${createdBy}) didn't modify the record`);
+      log.warn(`updateNameById("${name}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 
@@ -99,7 +105,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
     });
 
     if (affectedRows === 0) {
-      throw new MysqlUpdateException(`updateDescriptionById("${description}", where: ${id}, ${createdBy}) didn't modify the record`);
+      log.warn(`updateDescriptionById("${description}", where: ${id}, ${createdBy}) didn't modify the record`);
     }
   }
 
