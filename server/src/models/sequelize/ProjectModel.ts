@@ -52,13 +52,13 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
 
   public async getProjectsByUserId(userId: number): Promise<UnionProjectType[]> {
     return await Sequelize.query(`
-        SELECT members.userId as userId,
-               projects.createdBy,
-               projects.name,
-               projects.id,
-               projects.description,
-               projects.createdAt,
-               projects.updatedAt
+        SELECT DISTINCT members.userId as userId,
+                        projects.createdBy,
+                        projects.name,
+                        projects.id,
+                        projects.description,
+                        projects.createdAt,
+                        projects.updatedAt
         FROM members
                  INNER JOIN teams
                             ON teams.id = members.teamId

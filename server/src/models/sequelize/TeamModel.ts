@@ -64,13 +64,13 @@ export default class TeamModel extends BaseModelSequelize<typeof model> {
   public async getTeamsByUserId(userId: number): Promise<TeamType[]> {
 
     return await Sequelize.query(`
-        SELECT members.userId as userId,
-               teams.createdBy,
-               teams.name,
-               teams.id,
-               teams.description,
-               teams.createdAt,
-               teams.updatedAt
+        SELECT DISTINCT members.userId as userId,
+                        teams.createdBy,
+                        teams.name,
+                        teams.id,
+                        teams.description,
+                        teams.createdAt,
+                        teams.updatedAt
         FROM members
                  INNER JOIN teams
                             ON teams.id = members.teamId
@@ -91,9 +91,6 @@ export default class TeamModel extends BaseModelSequelize<typeof model> {
       replacements: {userId},
       type: QueryTypes.SELECT,
     });
-    /*return await this.model.findAll({
-      where: {createdBy: userId}
-    });*/
   }
 
   public async updateProjectIdByTeamId(teamId: number, projectId: number): Promise<void> {
