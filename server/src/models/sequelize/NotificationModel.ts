@@ -62,6 +62,16 @@ export default class NotificationModel extends BaseModelSequelize<typeof model> 
     });
   }
 
+  public async getActiveNotificationsByUserEmail(email: string): Promise<NotificationType_[]> {
+
+    return await this.model.findAll({
+      where: {
+        email,
+        status: NotificationStatus.active
+      },
+    });
+  }
+
   public async updateStatusById(id: number, status: NotificationStatus, email: string): Promise<void> {
     const [affectedRows] = await this.model.update({status}, {
       where: {id, email},

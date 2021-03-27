@@ -53,7 +53,11 @@ export type ProjectType = {
 export type Team = {
   id: number;
   name: string;
+  userId: number;
+  createdBy: number;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type TeamType = {
@@ -71,4 +75,14 @@ export type UserType = {
   firstName: string;
   lastName: string;
   role: UserRole,
+}
+
+export type UserInfoType = {
+  notification: number;
+  userInfo: {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+  }
 }

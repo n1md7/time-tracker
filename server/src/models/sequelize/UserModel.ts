@@ -1,7 +1,7 @@
 import BaseModelSequelize from '../BaseModelSequelize';
 import model, {tableName} from '../../database/sequelize/schema/User';
 import StringUtils from '../../helpers/StringUtils';
-import {MysqlUpdateException} from "../../exceptions";
+import {MysqlUpdateException} from '../../exceptions';
 
 export type RequestAuthType = {
   email: string;
@@ -59,7 +59,7 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
       password: passwordHash,
       email: requestParam.email,
       role: UserRole.basic,
-      status: UserStatus.pendingVerification
+      status: UserStatus.pendingVerification,
     });
   }
 
@@ -67,7 +67,7 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
     const resultRow = await this.model.findOne({
       where: {
         email: requestParam.email,
-      }
+      },
     });
     // No such user record in the Database
     if (!resultRow) {
@@ -86,7 +86,7 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
 
   public async updateRoleById(id: number, role: UserRole): Promise<void> {
     const [affectedRows] = await this.model.update({role}, {
-      where: {id}
+      where: {id},
     });
 
     if (affectedRows === 0) {
@@ -96,7 +96,7 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
 
   public async updateStatusById(id: number, status: UserStatus): Promise<void> {
     const [affectedRows] = await this.model.update({status}, {
-      where: {id}
+      where: {id},
     });
 
     if (affectedRows === 0) {
@@ -113,7 +113,7 @@ export default class UserModel extends BaseModelSequelize<typeof model> {
     return resultRow.dataValues as UserType;
   }
 
-  public async getUserByEmail(email: string): Promise<boolean | UserType> {
-    return this.userExist(email);
+  public async getUserByEmail(email: string): Promise<UserType> {
+    return await this.model.findOne({where: {email}});
   }
 }

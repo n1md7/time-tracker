@@ -69,9 +69,6 @@ class UserController extends BaseController implements UserInterface {
       await inviteModel.updateStatusByEmail(email, invite.id, InvitationStatus.pendingApproval);
     }
 
-    const project = await createProject(user.id);
-    await createTeam(project.id, user.id);
-
     ctx.status = HttpCode.created;
   }
 
@@ -98,6 +95,23 @@ class UserController extends BaseController implements UserInterface {
     const notificationModel = new NotificationModel();
 
     ctx.body = await notificationModel.getNotificationsByUserEmail(ctx.store.email);
+  }
+
+  public async userInfo(ctx: MyContext): Promise<void> {
+    const userModel = new UserModel();
+    const notificationModel = new NotificationModel();
+    const notification = await notificationModel.getActiveNotificationsByUserEmail(ctx.store.email);
+    const user = await userModel.getUserByEmail(ctx.store.email);
+
+    ctx.body = {
+      notification: notification.length,
+      userInfo: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    };
   }
 }
 

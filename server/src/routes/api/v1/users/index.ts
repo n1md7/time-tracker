@@ -5,6 +5,7 @@ import authValidator from '../../../../middlewares/authValidator';
 const userRouter = new Router();
 
 userRouter.get('/user/status', authValidator, UserController.status);
+userRouter.get('/user/info', authValidator, UserController.userInfo);
 userRouter.get('/user/token/refresh', authValidator, UserController.refreshToken);
 userRouter.get('/user/notifications', authValidator, UserController.userNotifications);
 userRouter.post('/user/new', UserController.createNewUser);

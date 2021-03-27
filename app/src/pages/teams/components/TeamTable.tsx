@@ -1,6 +1,6 @@
-import React from "react";
-import {Team} from "../../../types";
-import TableRow from "./TableRow";
+import React from 'react';
+import {Team} from '../../../types';
+import TableRow from './TableRow';
 import InlineLoading from '../../../components/InlineLoading';
 import NoData from '../../../components/NoData';
 
@@ -30,11 +30,9 @@ export default function TeamTable({teams, fetching}: Teams) {
       {
         teams.map((team, key) =>
           <TableRow
-            key={team.id}
+            key={key}
             index={key}
-            id={team.id}
-            name={team.name}
-            description={team.description}
+            {...team}
           />)
       }
       </tbody>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Notification, NotificationStatus} from '../Notifications';
 import {httpClient} from '../../../services/HttpClient';
 import {AxiosResponse} from 'axios';
@@ -6,11 +6,14 @@ import Alert, {AlertType} from '../../../components/Alert';
 
 
 export default function InvitationRow(props: Notification) {
+  const [seen, setSeen] = useState(props.status === NotificationStatus.seen);
+
   const acceptHandler = () => {
     httpClient.put<AxiosResponse, AxiosResponse<string>>(`/v1/member/accept/invite/${props.linkId}`)
       .then(response => {
         if (response.status === 204) {
           Alert('Accepted');
+          setSeen(true);
         }
       });
   };
@@ -20,6 +23,7 @@ export default function InvitationRow(props: Notification) {
       .then(response => {
         if (response.status === 204) {
           Alert('Declined', AlertType.WARNING);
+          setSeen(true);
         }
       });
   };
@@ -28,7 +32,7 @@ export default function InvitationRow(props: Notification) {
     <tr>
       <td className={'text-center'}>
         {
-          props.status === NotificationStatus.seen ? <del>{props.text}</del> : (
+          seen ? <del>{props.text}</del> : (
             <>
               {props.text}
               <button onClick={acceptHandler} className="btn btn-success btn-sm ml-3">Accept</button>
