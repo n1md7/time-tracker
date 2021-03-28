@@ -1,29 +1,21 @@
 import {httpClient} from '../services/HttpClient';
 import {AxiosResponse} from 'axios';
 import {UserInfoType} from '../types';
-import {useEffect, useState} from 'react';
 import Alert, {AlertType} from '../components/Alert';
+import {useDispatch} from 'react-redux';
+import {updateUserInfo, updateUserNotification} from '../redux/actions';
 
 
-export default function useUserInfo(): [UserInfoType, boolean] {
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<UserInfoType>({
-    notification: 0,
-    userInfo: {
-      id: -1,
-      email: '',
-      firstName: '',
-      lastName: '',
-    },
-  });
+export default function useUserInfo(): () => Promise<void> {
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    httpClient
+  return (): Promise<void> => {
+    return httpClient
       .get<AxiosResponse, AxiosResponse<UserInfoType>>('v1/user/info')
-      .then((response) => setInfo(response.data))
+      .then((response) => {
+        dispatch(updateUserNotification(response.data.notification));
+        dispatch(updateUserInfo(response.data.userInfo));
+      })
       .catch(({message}) => Alert(message, AlertType.ERROR))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return [info, loading];
+  };
 }

@@ -1,34 +1,48 @@
-import {UserRole, UserType} from '../../types';
+import {UserRole, UserInfoType} from '../../types';
 
 export enum UserAction {
-  update = 'user-update',
   reset = 'user-reset',
+  notificationUpdate = 'user-notification-update',
+  infoUpdate = 'user-info-update'
 }
 
 type UserActionType = {
   type: UserAction;
-}
-
-const userDefaultState: UserType = {
-  id: -1,
-  email: '',
-  firstName: '',
-  lastName: '',
-  role: UserRole.basic,
+  data: UserInfoType;
 };
 
-const user = (state: UserType = userDefaultState, {type, ...rest}: UserActionType) => {
+const defaultState: UserInfoType = {
+  notification: 0,
+  userInfo: {
+    id: -1,
+    email: '',
+    firstName: '',
+    lastName: '',
+    role: UserRole.basic,
+  },
+};
+
+const userInfo = (state: UserInfoType = defaultState, action: UserActionType) => {
+  const {type, data} = action;
   switch (type) {
-    case UserAction.update:
+    case UserAction.notificationUpdate:
       return {
         ...state,
-        ...rest,
+        notification: data.notification,
+      };
+    case UserAction.infoUpdate:
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          ...data.userInfo,
+        },
       };
     case UserAction.reset:
-      return userDefaultState;
+      return defaultState;
     default:
       return state;
   }
 };
 
-export default user;
+export default userInfo;

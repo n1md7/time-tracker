@@ -3,10 +3,10 @@ import user from './user';
 import modal from './modal';
 import projects from './projects';
 import teams from './teams';
-import {ConfirmModalType, ProjectType, TeamType, UserType} from '../../types';
+import {ConfirmModalType, ProjectType, TeamType, UserInfoType} from '../../types';
 
 export interface RootReducer {
-  user: UserType,
+  user: UserInfoType,
   modal: ConfirmModalType,
   projects: ProjectType,
   teams: TeamType,

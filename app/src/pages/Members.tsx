@@ -6,6 +6,7 @@ import {httpClient} from '../services/HttpClient';
 import {AxiosResponse} from 'axios';
 import {JoyErrorItem} from '../types';
 import Alert from '../components/Alert';
+import useUserInfo from '../hooks/useUserInfo';
 
 enum Field {
   teamId = 'teamId',
@@ -19,6 +20,8 @@ export default function Members() {
   const [email, setEmail] = useState<string>();
   const [errorFields, setErrorFields] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
+  const fetchUserInfo = useUserInfo();
+
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,12 +31,13 @@ export default function Members() {
       .post<AxiosResponse, AxiosResponse<string | JoyErrorItem[]>>('v1/member/invite', {
         email, teamId,
       })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 201) {
           setErrorFields([]);
           Alert('Member invited');
           setEmail('');
           setTeamId(-1);
+          await fetchUserInfo();
         } else {
           if (response.data instanceof Array) {
             const joyErrorItem = response.data as JoyErrorItem[];
@@ -93,7 +97,7 @@ export default function Members() {
               <input
                 placeholder={'Invitee email address'}
                 value={email} onChange={({target: {value}}) => setEmail(value)}
-                     type="text" className={showError(Field.email)}/>
+                type="text" className={showError(Field.email)}/>
               <div className="invalid-feedback">
                 Please add a valid E-mail address
               </div>

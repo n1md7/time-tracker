@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import {FaProjectDiagram} from 'react-icons/fa';
@@ -10,13 +10,23 @@ import {MdPowerSettingsNew} from 'react-icons/md';
 import {IconContext} from 'react-icons';
 import useUserInfo from '../hooks/useUserInfo';
 import InlineLoading from './InlineLoading';
+import {useSelector} from 'react-redux';
+import {RootReducer} from '../redux/reducers';
 
 type NavbarType = {
   children: any | any[]
 }
 export default function NavBar({children}: NavbarType) {
+  const {notification} = useSelector((store: RootReducer) => store.user);
+  const [fetching, setFetching] = useState(true);
+  const fetchUserInfo = useUserInfo();
 
-  const [userInfo, loading] = useUserInfo();
+  useEffect(() => {
+    (async () => {
+      await fetchUserInfo();
+      setFetching(false);
+    })();
+  }, []);
 
   return (
     <>
@@ -34,11 +44,11 @@ export default function NavBar({children}: NavbarType) {
           <Nav>
             <Link className="nav-link" to={{pathname: '/notifications'}}>
               <IconContext.Provider value={{size: '1.2em'}}>
-                <GrNotification/> (<span className="badge rounded-circle text-warning font-weight-bold">
+                <GrNotification/> <span className="badge rounded-circle text-warning font-weight-bold">
                 {
-                  loading ? <InlineLoading/> : userInfo.notification
+                  fetching ? <InlineLoading/> : (notification > 0 ? `( ${notification} )`: '')
                 }
-              </span>)
+              </span>
               </IconContext.Provider>
             </Link>
           </Nav>
