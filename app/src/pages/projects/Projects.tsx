@@ -40,6 +40,7 @@ export default function Projects() {
 
   useEffect(() => {
     fetchProjects();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function Projects() {
       resetDescription();
     }
     authError && Alert(authError, AlertType.ERROR);
+    // eslint-disable-next-line
   }, [responseModified]);
 
   return (

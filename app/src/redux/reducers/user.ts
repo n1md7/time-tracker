@@ -6,7 +6,7 @@ export enum UserAction {
   infoUpdate = 'user-info-update'
 }
 
-type UserActionType = {
+export type UserActionType = {
   type: UserAction;
   data: UserInfoType;
 };

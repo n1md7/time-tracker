@@ -24,6 +24,7 @@ function App() {
     // This is problematic only in Chrome
     // And caused by Redux-dev tool extension
     dispatch(resetModal());
+    // eslint-disable-next-line
   }, []);
 
   return (
