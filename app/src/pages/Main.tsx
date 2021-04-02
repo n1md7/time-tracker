@@ -1,55 +1,38 @@
-import React, {useEffect, useState} from "react";
-import NavBar from "../components/NavBar";
+import React, {useEffect, useState} from 'react';
+import NavBar from '../components/NavBar';
 import {IconContext} from 'react-icons';
 import {FaStopCircle, FaPlayCircle} from 'react-icons/fa';
 import {MdDelete} from 'react-icons/md';
-import {timeFormat, TimeInterval} from "../helpers";
-import useFetchProjects from "../hooks/project/useFetchProjects";
+import {timeFormat, TimeInterval} from '../helpers';
+import useFetchProjects from '../hooks/project/useFetchProjects';
 import '../styles/main.scss';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootReducer} from '../redux/reducers';
+import {toggleUserIsTracking} from '../redux/actions';
 
 export default function Main() {
   const [style, setStyle] = useState({color: 'green', size: '2.4em'});
-  const [isTracking, setIsTracking] = useState(false);
-  const [time, setTime] = useState(0);
-  const [originalTitle, setOriginalTitle] = useState('');
   const [fetchProjects, projects, fetching] = useFetchProjects();
+  const {isTracking, time} = useSelector((state: RootReducer) => state.user.timeTracker);
+  const dispatch = useDispatch();
 
-  const isTrackingHandler = () => setIsTracking(!isTracking);
+  const isTrackingHandler = () => dispatch(toggleUserIsTracking());
 
   useEffect(() => {
-    setOriginalTitle(document.title || 'Time Track');
     fetchProjects();
-  }, [])
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     const defaultStyle = {
       color: 'green',
-      size: '2.4em'
+      size: '2.4em',
     };
     if (isTracking) {
       defaultStyle.color = 'red';
     }
     setStyle(defaultStyle);
   }, [isTracking]);
-
-  useEffect(() => {
-    let interval = null;
-    if (isTracking) {
-      interval = setInterval(() => {
-        setTime(time + 1);
-      }, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, [isTracking, time]);
-
-  useEffect(() => {
-    if (isTracking) {
-      document.title = `${timeFormat(time, TimeInterval.mm_ss)} | ${originalTitle}`;
-    } else {
-      document.title = originalTitle;
-    }
-  }, [isTracking, time]);
 
   return (
     <NavBar>
@@ -59,7 +42,7 @@ export default function Main() {
                  className="form-control rounded-0"
                  placeholder="What are you working on?"/>
           <div className="input-group-append">
-            <select disabled={fetching} className="btn btn-outline-secondary dropdown-toggle rounded-0">
+            <select disabled={fetching} className="btn btn-outline-secondary rounded-0">
               <option value="">{fetching ? 'Loading...' : 'Select project'}</option>
               {
                 projects.map((project, key) => (

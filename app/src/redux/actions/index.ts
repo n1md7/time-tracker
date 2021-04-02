@@ -14,6 +14,25 @@ export const updateUserNotification = (notification: number) => (dispatch: Dispa
   });
 };
 
+export const updateUserTimeTrackTitle = (timeTracker: { title: string }) => ({
+  type: UserAction.titleUpdate,
+  data: {
+    timeTracker,
+  },
+});
+
+export const updateUserTrackerTime = (timeTracker: { time: number }) => ({
+  type: UserAction.timeUpdate,
+  data: {
+    timeTracker,
+  },
+});
+
+export const toggleUserIsTracking = () => ({
+  type: UserAction.isTrackingToggle,
+  data: {},
+});
+
 export const updateUserInfo = (userInfo: UserType) => ({
   type: UserAction.infoUpdate,
   data: {

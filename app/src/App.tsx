@@ -11,19 +11,23 @@ import Members from './pages/Members';
 import Teams from './pages/teams/Teams';
 import Team from './pages/teams/Team';
 import Projects from './pages/projects/Projects';
-import {resetModal} from './redux/actions';
+import {resetModal, updateUserTimeTrackTitle} from './redux/actions';
 import {useDispatch} from 'react-redux';
 import Notifications from './pages/notification/Notifications';
+import useTimeTracker from './hooks/useTimeTracker';
 import './styles/App.scss';
 
 function App() {
   const dispatch = useDispatch();
+  useTimeTracker();
+
 
   useEffect(() => {
     // Reset state on page refresh
     // This is problematic only in Chrome
     // And caused by Redux-dev tool extension
     dispatch(resetModal());
+    dispatch(updateUserTimeTrackTitle({title: document.title || 'Time Track'}));
     // eslint-disable-next-line
   }, []);
 

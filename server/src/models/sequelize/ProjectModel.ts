@@ -60,8 +60,7 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
                         projects.id,
                         projects.description,
                         projects.createdAt,
-                        projects.updatedAt,
-                        teams.name     as teamName
+                        projects.updatedAt
         FROM members
                  INNER JOIN teams
                             ON teams.id = members.teamId
@@ -75,11 +74,8 @@ export default class ProjectModel extends BaseModelSequelize<typeof model> {
                projects.id,
                projects.description,
                projects.createdAt,
-               projects.updatedAt,
-               teams.name         as teamName
+               projects.updatedAt
         FROM projects
-                 LEFT JOIN teams
-                           ON teams.projectId = projects.id
         WHERE projects.createdBy = :userId
         ORDER BY createdAt ASC
 

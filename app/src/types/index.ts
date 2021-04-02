@@ -36,7 +36,6 @@ export enum ProjectStatus {
 }
 
 export type Project = {
-  teamName: string;
   id: number;
   name: string;
   userId: number;
@@ -78,7 +77,19 @@ export type UserType = {
   role: UserRole,
 }
 
+export type TimeTracker = {
+  time: number;
+  isTracking: boolean;
+  title: string;
+}
 export type UserInfoType = {
+  timeTracker?: TimeTracker;
   notification?: number;
   userInfo?: UserType;
+}
+
+export type UserInfoStateType = {
+  timeTracker: TimeTracker;
+  notification: number;
+  userInfo: UserType;
 }
