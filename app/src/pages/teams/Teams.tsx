@@ -86,8 +86,8 @@ export default function Teams() {
                 custom>
                 <option value="">{fetchingProjects ? 'Loading...' : 'Select project'}</option>
                 {
-                  projects.map(project => (
-                    <option key={project.id} value={project.id}>{project.name}</option>
+                  projects.map((project, key) => (
+                    <option key={key} value={project.id}>{project.name}</option>
                   ))
                 }
               </Form.Control>

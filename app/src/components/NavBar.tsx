@@ -46,7 +46,7 @@ export default function NavBar({children}: NavbarType) {
               <IconContext.Provider value={{size: '1.2em'}}>
                 <GrNotification/> <span className="badge rounded-circle text-warning font-weight-bold">
                 {
-                  fetching ? <InlineLoading/> : (notification > 0 ? `( ${notification} )`: '')
+                  fetching ? <InlineLoading/> : (notification ? `( ${notification} )`: '')
                 }
               </span>
               </IconContext.Provider>

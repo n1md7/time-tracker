@@ -5,7 +5,7 @@ import {UserAction, UserActionType} from '../reducers/user';
 import {UserType} from '../../types';
 import {Dispatch} from 'react';
 
-export const updateUserNotification = (notification: number) => (dispatch: Dispatch<UserActionType | any>) => {
+export const updateUserNotification = (notification: number) => (dispatch: Dispatch<UserActionType>) => {
   return dispatch({
     type: UserAction.notificationUpdate,
     data: {

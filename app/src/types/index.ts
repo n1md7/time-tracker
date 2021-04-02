@@ -79,6 +79,6 @@ export type UserType = {
 }
 
 export type UserInfoType = {
-  notification: number;
-  userInfo: UserType;
+  notification?: number;
+  userInfo?: UserType;
 }
