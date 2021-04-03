@@ -12,12 +12,14 @@ import useUserInfo from '../hooks/useUserInfo';
 import InlineLoading from './InlineLoading';
 import {useSelector} from 'react-redux';
 import {RootReducer} from '../redux/reducers';
+import {timeFormat, TimeInterval} from '../helpers';
 
 type NavbarType = {
   children: any | any[]
 }
 export default function NavBar({children}: NavbarType) {
   const {notification} = useSelector((store: RootReducer) => store.user);
+  const {isTracking, time} = useSelector((state: RootReducer) => state.user.timeTracker);
   const [fetching, setFetching] = useState(true);
   const fetchUserInfo = useUserInfo();
 
@@ -26,6 +28,7 @@ export default function NavBar({children}: NavbarType) {
       await fetchUserInfo();
       setFetching(false);
     })();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -42,11 +45,16 @@ export default function NavBar({children}: NavbarType) {
             <Link className="nav-link" to={{pathname: '/members'}}><AiOutlineTeam/> Members</Link>
           </Nav>
           <Nav>
+            <Link className="nav-link" to={{pathname: '/'}}>
+              {
+                isTracking && timeFormat(time, TimeInterval.all)
+              }
+            </Link>
             <Link className="nav-link" to={{pathname: '/notifications'}}>
               <IconContext.Provider value={{size: '1.2em'}}>
                 <GrNotification/> <span className="badge rounded-circle text-warning font-weight-bold">
                 {
-                  fetching ? <InlineLoading/> : (notification ? `( ${notification} )`: '')
+                  fetching ? <InlineLoading/> : (notification ? `( ${notification} )` : '')
                 }
               </span>
               </IconContext.Provider>
