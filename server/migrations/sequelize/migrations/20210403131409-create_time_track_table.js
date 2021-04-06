@@ -30,7 +30,7 @@ module.exports = {
       collate: 'utf8_general_ci'
     });
 
-    await queryInterface.addIndex('notifications', ['userId', 'projectId', 'status', 'taskId']);
+    await queryInterface.addIndex('timeTracks', ['userId', 'projectId', 'status', 'taskId']);
   },
 
   down: async (queryInterface, Sequelize) => {

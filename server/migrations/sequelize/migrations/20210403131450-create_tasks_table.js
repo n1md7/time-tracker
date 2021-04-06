@@ -27,7 +27,7 @@ module.exports = {
       collate: 'utf8_general_ci'
     });
 
-    await queryInterface.addIndex('notifications', ['projectId', 'status']);
+    await queryInterface.addIndex('tasks', ['projectId', 'status']);
   },
 
   down: async (queryInterface, Sequelize) => {

@@ -14,6 +14,8 @@ import NotificationModel, {
 import TeamModel from '../../models/sequelize/TeamModel';
 import StringUtils from '../../helpers/StringUtils';
 import MemberModel from '../../models/sequelize/MemberModel';
+import {Env} from "../../types";
+import '../../helpers/prototypes';
 
 class MemberController extends BaseController {
 
@@ -55,6 +57,10 @@ class MemberController extends BaseController {
       linkId: invitation.id,
     };
     await notification.createNotification(notificationRequestParams);
+    // TODO: remove this once Mail service is added
+    if(process.env.NODE_ENV.equalTo(Env.Dev)){
+      console.log(`Invitation link: http://localhost:3000/sign-up/${invitation.invitationKey}`);
+    }
 
     ctx.status = HttpCode.created;
   }
